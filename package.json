@@ -1,0 +1,39 @@
+{
+  "name": "show-js-error",
+  "description": "Show a message about a js error in any browser",
+  "version": "1.0.0",
+  "author": {
+    "name": "Denis Seleznev",
+    "email": "hcodes@yandex.ru",
+    "url": "https://github.com/hcodes/"
+  },
+  "homepage": "https://github.com/hcodes/show-js-error",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/hcodes/show-js-error/blob/gh-pages/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hcodes/show-js-error.git"
+  },
+  "keywords": [
+    "error",
+    "errors",
+    "js error"
+  ],
+  "engines": {
+    "node": ">= 0.12"
+  },
+  "devDependencies": {
+    "gulp": "3.9.x",
+    "gulp-concat": "2.6.x",
+    "gulp-less": "3.0.x",
+    "eslint": "2.2.x"
+  },
+  "scripts": {
+    "test": "npm run eslint",
+    "eslint": "./node_modules/.bin/eslint ."
+  }
+}

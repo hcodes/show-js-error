@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Show js error</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="stylesheet" href="../dist/show-js-error.css" />
+        <script src="../dist/show-js-error.custom.js"></script>
+        <script>
+            showJSError.init({
+                title: 'JavaScript error',
+                userAgent: navigator.userAgent,
+                send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&message={message}'
+            });
+        </script>
+        <script>
+        var a = root;
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

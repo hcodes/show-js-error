@@ -1,0 +1,13 @@
+{
+    "rules": {
+        "semi": [2, "always"],
+        "quotes": [2, "single"]
+    },
+    "env": {
+        "browser": true
+    },
+    "globals": {
+        "showJSError": true
+    },
+    "extends": "eslint:recommended"
+}
