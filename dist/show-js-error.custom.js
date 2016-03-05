@@ -38,17 +38,30 @@ var showJSError = {
             };
         }
     },
+    /**
+     * Show error message.
+     *
+     * @param {String|Object|Error} err
+     */
     show: function(err) {
         if (typeof err !== 'undefined') {
             this._buffer.push(typeof err === 'object' ? err : new Error(err));
-            this._update();
         }
 
+        this._update();
         this._show();
     },
+    /**
+     * Hide error message.
+     */
     hide: function() {
-        this._container.className = this.elemClass('');
+        if (this._container) {
+            this._container.className = this.elemClass('');
+        }
     },
+    /**
+     * Copy error message to clipboard.
+     */
     copyText: function() {
         var err = this._buffer[this._i],
             text = this._getDetailedMessage(err),
@@ -72,6 +85,16 @@ var showJSError = {
 
         body.removeChild(textarea);
     },
+    /**
+     * Create a elem.
+     *
+     * @param {Object} data
+     * @param {string} data.name
+     * @param {DOMElement} data.container
+     * @param {string} [data.tag]
+     * @param {Object} [data.props]
+     * @returns {DOMElement}
+     */
     elem: function(data) {
         var el = document.createElement(data.tag || 'div'),
             props = data.props;
@@ -88,6 +111,13 @@ var showJSError = {
 
         return el;
     },
+    /**
+     * Build className for elem.
+     *
+     * @param {string} [name]
+     * @param {string} [mod]
+     * @returns {string}
+     */
     elemClass: function(name, mod) {
         var cl = 'show-js-error';
         if (name) {
@@ -100,6 +130,12 @@ var showJSError = {
 
         return cl;
     },
+    /**
+     * Escape HTML.
+     *
+     * @param {string} text
+     * @returns {string}
+     */
     escapeHTML: function(text) {
         return (text || '').replace(/[&<>"'\/]/g, function(sym) {
             return {
@@ -112,13 +148,19 @@ var showJSError = {
             }[sym];
         });
     },
+    /**
+     * Toggle view (shortly/detail).
+     */
     toggleDetailed: function() {
-        if (this._toggleDetailed) {
-            this._toggleDetailed = false;
-            this._body.className = this.elemClass('body');
-        } else {
-            this._toggleDetailed = true;
-            this._body.className = this.elemClass('body', 'detailed');
+        var body = this._body;
+        if (body) {
+            if (this._toggleDetailed) {
+                this._toggleDetailed = false;
+                body.className = this.elemClass('body');
+            } else {
+                this._toggleDetailed = true;
+                body.className = this.elemClass('body', 'detailed');
+            }
         }
     },
     _append: function() {
@@ -289,7 +331,7 @@ var showJSError = {
             'Page url: ' + window.location.href,
             'Refferer: ' + document.referrer,
             'User-agent: ' + (this.settings.userAgent || navigator.userAgent)
-        ].join('\n')
+        ].join('\n');
     },
     _getExtFilename: function(e) {
         var html = this.escapeHTML(this._getFilenameWithPosition(e));
@@ -300,11 +342,14 @@ var showJSError = {
             return html;
         }
     },
+    _get: function(value, defaultValue) {
+        return typeof value !== 'undefined' ? value : defaultValue;
+    },
     _getFilenameWithPosition: function(e) {
         return e.filename ?
             e.filename +
-            ':' + (typeof e.lineno !== 'undefined' ? e.lineno : '') +
-            ':' + (typeof e.colno !== 'undefined' ? e.colno : '')
+            ':' + this._get(e.lineno, '') +
+            ':' + this._get(e.colno, '')
             : '';
     },
     _getMessage: function(e) {

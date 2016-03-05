@@ -25,6 +25,21 @@ showJSError.init({
 });
 </script>
 ```
+
+## Show custom error
+```js
+showJSError.show({
+    title: 'My title',
+    message: 'My message',
+    filename: 'My filename',
+    stack: 'My stack',
+    lineno: 100,
+    colno: 3,
+    userAgent: 'iOS 10, Safari'
+});
+
+```
+
 ## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
 
 ## [License](./LICENSE.md)
