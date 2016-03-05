@@ -10,13 +10,25 @@
             showJSError.init({
                 title: 'JavaScript error',
                 userAgent: navigator.userAgent,
-                send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&message={message}'
+                send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
             });
         </script>
     </head>
     <body>
         <script>
-        var a = root;
+            function a() {
+                b();
+            }
+
+            function b() {
+                window['a b']();
+            }
+            
+            window['a b'] = function() {
+               var a = root;
+            }
+
+            a();
         </script>
     </body>
 </html>

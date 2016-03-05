@@ -21,7 +21,7 @@ or
 showJSError.init({
     title: 'JavaScript error',
     userAgent: navigator.userAgent,
-    send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&message={message}'
+    send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
 });
 </script>
 ```

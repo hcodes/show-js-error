@@ -76,7 +76,8 @@
 }
 .show-js-error__arrows {
   display: none;
-  float: right;
+  float: left;
+  margin-left: 8px;
 }
 .show-js-error__arrows_visible {
   display: block;
@@ -88,12 +89,12 @@
 .show-js-error__num {
   font-size: 9px;
 }
-.show-js-error__copy,
-.show-js-error__send {
-  float: left;
-  margin-right: 5px;
-}
 .show-js-error__num {
   margin-right: 5px;
   margin-left: 5px;
+}
+.show-js-error__copy,
+.show-js-error__send {
+  float: left;
+  margin-right: 3px;
 }
