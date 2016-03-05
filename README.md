@@ -7,6 +7,9 @@ Useful for developing and testing your site on mobile phones, tablets and deskto
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/simple.png)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/detailed.png)
 
+### Browsers
+Any.
+
 ## Using
 ```html
 <link rel="stylesheet" href="dist/show-js-error.css" />
@@ -37,6 +40,13 @@ showJSError.show({
     colno: 3,
     userAgent: 'iOS 10, Safari'
 });
+
+// or
+showJSError.show('Hello error!');
+
+// or
+var err = new Error();
+showJSError.show(err);
 
 ```
 
