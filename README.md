@@ -38,7 +38,7 @@ showJSError.show({
     stack: 'My stack',
     lineno: 100,
     colno: 3,
-    userAgent: 'iOS 10, Safari'
+    userAgent: 'OS X Yosemite, Safari 8'
 });
 
 // or
