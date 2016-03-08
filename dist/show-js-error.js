@@ -408,7 +408,7 @@ var showJSError = {
             this._ua.innerHTML = this.escapeHTML(navigator.userAgent);
         }
 
-        if (this.settings.send) {
+        if (this._sendLink) {
             this._sendLink.href = this.settings.sendUrl
                 .replace(/\{title\}/, encodeURIComponent(this._getMessage(e)))
                 .replace(/\{body\}/, encodeURIComponent(this._getDetailedMessage(e)));
