@@ -7,7 +7,7 @@ Useful for developing and testing your site on mobile phones, tablets and deskto
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/simple.png?)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/detailed.png?)
 
-### Browsers
+## Browsers
 Any.
 
 ## Install
