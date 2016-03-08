@@ -336,6 +336,7 @@ var showJSError = {
     },
     _getDetailedMessage: function(err) {
         return [
+            'Title: ' + (err.title || this._getTitle()),
             'Message: ' + this._getMessage(err),
             'Filename: ' + this._getFilenameWithPosition(err),
             'Stack: ' + this._getStack(err),
@@ -405,7 +406,7 @@ var showJSError = {
         this._filename.innerHTML = filename;
 
         if (this.settings.userAgent) {
-            this._ua.innerHTML = this.escapeHTML(navigator.userAgent);
+            this._ua.innerHTML = this.escapeHTML(this.settings.userAgent);
         }
 
         if (this._sendLink) {
