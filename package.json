@@ -35,5 +35,10 @@
   "scripts": {
     "test": "npm run eslint",
     "eslint": "./node_modules/.bin/eslint ."
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+    "LICENSE"
+  ]
 }
