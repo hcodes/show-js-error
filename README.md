@@ -10,6 +10,11 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-p
 ### Browsers
 Any.
 
+## Install
+```
+npm install show-js-error --save-dev
+```
+
 ## Using
 ```html
 <link rel="stylesheet" href="dist/show-js-error.css" />
@@ -53,5 +58,5 @@ showJSError.show(err);
 
 ## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
 
-## [License](./LICENSE.md)
+## [License](./LICENSE)
 MIT License
