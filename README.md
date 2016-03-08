@@ -4,8 +4,8 @@ Show js error
 Shows a message when an js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, tablets and desktop.
 
-Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/simple.png)<br><br>
-Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/detailed.png)
+Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/simple.png?)<br><br>
+Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/detailed.png?)
 
 ### Browsers
 Any.
