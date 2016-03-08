@@ -62,5 +62,5 @@ showJSError.show(err);
 
 ## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
 
-## [License](./LICENSE)
+## [License](https://github.com/hcodes/show-js-error/blob/gh-pages/LICENSE)
 MIT License
