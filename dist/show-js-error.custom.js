@@ -1,14 +1,28 @@
 /*! show-js-error | © 2016 Denis Seleznev | MIT License */
 /* exported showJSError */
 var showJSError = {
+    /**
+     * Initialize.
+     *
+     * @param {Object} [settings]
+     * @param {string} [settings.title]
+     * @param {string} [settings.userAgent]
+     * @param {string} [settings.sendText]
+     * @param {string} [settings.sendUrl]
+     */
     init: function(settings) {
         var that = this;
 
         this.settings = settings || {};
 
-        this._buffer = [];
+        if (this._inited) {
+            return;
+        }
+
+        this._inited = true;
         this._isLast = true;
         this._i = 0;
+        this._buffer = [];
 
         this._onerror = function(e) {
             that._buffer.push(e);
@@ -164,10 +178,7 @@ var showJSError = {
         }
     },
     _append: function() {
-        var that = this,
-            append = function() {
-                document.body.appendChild(that._container);
-            };
+        var that = this;
 
         this._container = document.createElement('div');
         this._container.className = this.elemClass('');
@@ -175,7 +186,7 @@ var showJSError = {
         this._title = this.elem({
             name: 'title',
             props: {
-                innerHTML: this.settings.title || ''
+                innerHTML: this._getTitle()
             },
             container: this._container
         });
@@ -236,7 +247,7 @@ var showJSError = {
             container: this._actions
         });
 
-        if (this.settings.send) {
+        if (this.settings.sendUrl) {
             this._sendLink = this.elem({
                 tag: 'a',
                 name: 'send-link',
@@ -252,7 +263,7 @@ var showJSError = {
                 name: 'send',
                 props: {
                     type: 'button',
-                    value: 'Send'
+                    value: this.settings.sendText || 'Send'
                 },
                 container: this._sendLink
             });
@@ -309,17 +320,17 @@ var showJSError = {
             container: this._arrows
         });
 
+        var append = function() {
+            document.body.appendChild(that._container);
+        };
+
         if (document.body) {
             append();
         } else {
             if (document.addEventListener) {
-                document.addEventListener('DOMContentLoaded', function() {
-                    append();
-                }, false);
+                document.addEventListener('DOMContentLoaded', append, false);
             } else if (document.attachEvent) {
-                document.attachEvent('onload', function() {
-                    append();
-                });
+                document.attachEvent('onload', append);
             }
         }
     },
@@ -365,6 +376,9 @@ var showJSError = {
     _getStack: function(err) {
         return (err.error && err.error.stack) || err.stack || '';
     },
+    _getTitle: function() {
+        return this.settings.title || 'JavaScript error';
+    },
     _show: function() {
         this._container.className = this.elemClass('', 'visible');
     },
@@ -375,15 +389,16 @@ var showJSError = {
         }
 
         var e = this._buffer[this._i],
+            stack = this._getStack(e),
             filename;
 
-        if (e.stack) {
-            filename = this.escapeHTML(e.stack);
+        if (stack) {
+            filename = this.escapeHTML(stack);
         } else {
             filename = this._getExtFilename(e);
         }
 
-        this._title.innerHTML = this.escapeHTML(e.title || this.settings.title || '');
+        this._title.innerHTML = this.escapeHTML(e.title || this._getTitle());
 
         this._message.innerHTML = this.escapeHTML(this._getMessage(e));
 
@@ -394,7 +409,7 @@ var showJSError = {
         }
 
         if (this.settings.send) {
-            this._sendLink.href = this.settings.send
+            this._sendLink.href = this.settings.sendUrl
                 .replace(/\{title\}/, encodeURIComponent(this._getMessage(e)))
                 .replace(/\{body\}/, encodeURIComponent(this._getDetailedMessage(e)));
         }

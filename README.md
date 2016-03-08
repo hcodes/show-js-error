@@ -21,11 +21,12 @@ or
 <link rel="stylesheet" href="dist/show-js-error.css" />
 <script src="dist/show-js-error.custom.js"></script>
 <script>
-showJSError.init({
-    title: 'JavaScript error',
-    userAgent: navigator.userAgent,
-    send: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
-});
+    showJSError.init({
+        title: 'JavaScript error',
+        userAgent: navigator.userAgent,
+        sendText: 'Send 🐛',
+        sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
+    });
 </script>
 ```
 

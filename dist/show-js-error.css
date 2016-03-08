@@ -57,6 +57,14 @@
 .show-js-error .show-js-error__ua {
   display: none;
 }
+.show-js-error .show-js-error__filename {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: 1px solid #faa;
+  padding: 5px;
+  background: #ffe1ec;
+  white-space: pre-wrap;
+}
 .show-js-error__body_detailed .show-js-error__filename,
 .show-js-error__body_detailed .show-js-error__ua {
   display: block;
