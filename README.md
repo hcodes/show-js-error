@@ -21,14 +21,14 @@ npm install show-js-error --save-dev
 
 ## Using
 ```html
-<link rel="stylesheet" href="dist/show-js-error.css" />
-<script src="dist/show-js-error.js"></script>
+<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
+<script src="./node_modules/show-js-error/dist/show-js-error.js"></script>
 ```
 or
 
 ```html
-<link rel="stylesheet" href="dist/show-js-error.css" />
-<script src="dist/show-js-error.custom.js"></script>
+<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
+<script src="./node_modules/show-js-error/dist/show-js-error.custom.js"></script>
 <script>
     showJSError.init({
         title: 'JavaScript error',
