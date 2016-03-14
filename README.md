@@ -1,13 +1,17 @@
 Show js error
 =============
 
+[![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
+[![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
+[![Dependency Status](https://img.shields.io/david/hcodes/show-js-error.svg)](https://david-dm.org/hcodes/show-js-error)
+
 Shows a message when an js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, tablets and desktop.
 
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/simple.png?)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/gh-pages/images/detailed.png?)
 
-### Browsers
+## Browsers
 Any.
 
 ## Install
@@ -17,14 +21,14 @@ npm install show-js-error --save-dev
 
 ## Using
 ```html
-<link rel="stylesheet" href="dist/show-js-error.css" />
-<script src="dist/show-js-error.js"></script>
+<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
+<script src="./node_modules/show-js-error/dist/show-js-error.js"></script>
 ```
 or
 
 ```html
-<link rel="stylesheet" href="dist/show-js-error.css" />
-<script src="dist/show-js-error.custom.js"></script>
+<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
+<script src="./node_modules/show-js-error/dist/show-js-error.custom.js"></script>
 <script>
     showJSError.init({
         title: 'JavaScript error',
@@ -58,5 +62,5 @@ showJSError.show(err);
 
 ## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
 
-## [License](./LICENSE)
+## [License](https://github.com/hcodes/show-js-error/blob/gh-pages/LICENSE)
 MIT License
