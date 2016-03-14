@@ -5,10 +5,11 @@ var showJSError = {
      * Initialize.
      *
      * @param {Object} [settings]
-     * @param {string} [settings.title]
-     * @param {string} [settings.userAgent]
-     * @param {string} [settings.sendText]
-     * @param {string} [settings.sendUrl]
+     * @param {String} [settings.title]
+     * @param {String} [settings.userAgent]
+     * @param {String} [settings.sendText]
+     * @param {String} [settings.sendUrl]
+     * @param {String} [settings.additionalText]
      */
     init: function(settings) {
         var that = this;
@@ -79,21 +80,20 @@ var showJSError = {
     copyText: function() {
         var err = this._buffer[this._i],
             text = this._getDetailedMessage(err),
-            body = document.body;
-
-        var textarea = this.elem({
-            name: 'textarea',
-            tag: 'textarea',
-            props: {
-                innerHTML: text
-            },
-            container: body
-        });
+            body = document.body,
+            textarea = this.elem({
+                name: 'textarea',
+                tag: 'textarea',
+                props: {
+                    innerHTML: text
+                },
+                container: body
+            });
 
         try {
             textarea.select();
             document.execCommand('copy');
-        } catch(e) {
+        } catch (e) {
             alert('Copying text is not supported in this browser.');
         }
 
@@ -103,9 +103,9 @@ var showJSError = {
      * Create a elem.
      *
      * @param {Object} data
-     * @param {string} data.name
+     * @param {String} data.name
      * @param {DOMElement} data.container
-     * @param {string} [data.tag]
+     * @param {String} [data.tag]
      * @param {Object} [data.props]
      * @returns {DOMElement}
      */
@@ -128,9 +128,9 @@ var showJSError = {
     /**
      * Build className for elem.
      *
-     * @param {string} [name]
-     * @param {string} [mod]
-     * @returns {string}
+     * @param {String} [name]
+     * @param {String} [mod]
+     * @returns {String}
      */
     elemClass: function(name, mod) {
         var cl = 'show-js-error';
@@ -147,8 +147,8 @@ var showJSError = {
     /**
      * Escape HTML.
      *
-     * @param {string} text
-     * @returns {string}
+     * @param {String} text
+     * @returns {String}
      */
     escapeHTML: function(text) {
         return (text || '').replace(/[&<>"'\/]/g, function(sym) {
