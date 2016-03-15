@@ -218,6 +218,13 @@ var showJSError = {
             });
         }
 
+        if (this.settings.additionalText) {
+            this._additionalText = this.elem({
+                name: 'additional-text',
+                container: this._body
+            });
+        }
+
         this.elem({
             name: 'close',
             props: {
@@ -405,8 +412,12 @@ var showJSError = {
 
         this._filename.innerHTML = filename;
 
-        if (this.settings.userAgent) {
+        if (this._ua) {
             this._ua.innerHTML = this.escapeHTML(this.settings.userAgent);
+        }
+
+        if (this._additionalText) {
+            this._additionalText.innerHTML = this.escapeHTML(this.settings.additionalText);
         }
 
         if (this._sendLink) {
