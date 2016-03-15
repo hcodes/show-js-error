@@ -57,6 +57,13 @@
 .show-js-error .show-js-error__ua {
   display: none;
 }
+.show-js-error__body_detailed .show-js-error__filename,
+.show-js-error__body_detailed .show-js-error__ua {
+  display: block;
+}
+.show-js-error .show-js-error__additional-text {
+  color: #666;
+}
 .show-js-error .show-js-error__filename {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -65,12 +72,7 @@
   background: #ffe1ec;
   white-space: pre-wrap;
 }
-.show-js-error__body_detailed .show-js-error__filename,
-.show-js-error__body_detailed .show-js-error__ua {
-  display: block;
-}
 .show-js-error__actions {
-  margin-top: 3px;
   padding: 3px 5px;
   border-top: 1px solid #faa;
 }
