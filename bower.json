@@ -1,0 +1,29 @@
+{
+  "name": "show-js-error",
+  "description": "Show a message about a js error in any browser",
+  "version": "1.2.0",
+  "main": [
+    "dist/show-js-error.js",
+    "dist/show-js-error.custom.js",
+    "dist/show-js-error.css"
+  ],
+  "authors": [
+    "Denis Seleznev <hcodes@yandex.ru>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "error",
+    "errors",
+    "js error",
+    "debug"
+  ],
+  "homepage": "https://github.com/hcodes/show-js-error",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "images",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -21,7 +21,8 @@
   "keywords": [
     "error",
     "errors",
-    "js error"
+    "js error",
+    "debug"
   ],
   "engines": {
     "node": ">= 0.12"
