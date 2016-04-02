@@ -342,15 +342,28 @@ var showJSError = {
         }
     },
     _getDetailedMessage: function(err) {
-        return [
-            'Title: ' + (err.title || this._getTitle()),
-            'Message: ' + this._getMessage(err),
-            'Filename: ' + this._getFilenameWithPosition(err),
-            'Stack: ' + this._getStack(err),
-            'Page url: ' + window.location.href,
-            'Refferer: ' + document.referrer,
-            'User-agent: ' + (this.settings.userAgent || navigator.userAgent)
-        ].join('\n');
+        var screen = typeof window.screen === 'object' ? window.screen : {},
+            orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '',
+            props = [
+                ['Title', err.title || this._getTitle()],
+                ['Message', this._getMessage(err)],
+                ['Filename', this._getFilenameWithPosition(err)],
+                ['Stack', this._getStack(err)],
+                ['Page url', window.location.href],
+                ['Refferer', document.referrer],
+                ['User-agent', this.settings.userAgent || navigator.userAgent],
+                ['Screen size', [screen.width, screen.height, screen.colorDepth].join('×')],
+                ['Screen orientation', typeof orientation === 'string' ? orientation : orientation.type],
+                ['Cookie enabled', navigator.cookieEnabled]
+            ];
+
+        var text = '';
+        for (var i = 0; i < props.length; i++) {
+            var item = props[i];
+            text += item[0] + ': ' + item[1] + '\n';
+        }
+
+        return text;
     },
     _getExtFilename: function(e) {
         var html = this.escapeHTML(this._getFilenameWithPosition(e));
