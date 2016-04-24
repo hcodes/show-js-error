@@ -26,7 +26,17 @@ var showJSError = {
         this._buffer = [];
 
         this._onerror = function(e) {
-            that._buffer.push(e);
+            var error = e;
+
+            if (!e.bubbles && e.target && e.target.tagName) {
+                if (that.settings.errorLoading) {
+                    error = that._errorLoading(e);
+                } else {
+                    return;
+                }
+            }
+
+            that._buffer.push(error);
             if (that._isLast) {
                 that._i = that._buffer.length - 1;
             }
@@ -35,7 +45,7 @@ var showJSError = {
         };
 
         if (window.addEventListener) {
-            window.addEventListener('error', this._onerror, false);
+            window.addEventListener('error', this._onerror, true);
         } else {
             var oldOnError = window.onerror;
             window.onerror = function(message, filename, lineno, colno, error) {
@@ -341,16 +351,47 @@ var showJSError = {
             }
         }
     },
+    _errorLoading: function(e) {
+        var tagName = (e.target.tagName || '').toLowerCase(),
+            preparedTagName = {
+                img: 'image',
+                link: 'css'
+            }[tagName];
+
+        return {
+            title: 'Error loading',
+            message: 'Error loading ' + (preparedTagName || tagName),
+            filename: e.target.src || e.target.href
+        };
+    },
     _getDetailedMessage: function(err) {
-        return [
-            'Title: ' + (err.title || this._getTitle()),
-            'Message: ' + this._getMessage(err),
-            'Filename: ' + this._getFilenameWithPosition(err),
-            'Stack: ' + this._getStack(err),
-            'Page url: ' + window.location.href,
-            'Refferer: ' + document.referrer,
-            'User-agent: ' + (this.settings.userAgent || navigator.userAgent)
-        ].join('\n');
+        var settings = this.settings,
+            screen = typeof window.screen === 'object' ? window.screen : {},
+            orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '',
+            props = [
+                ['Title', err.title || this._getTitle()],
+                ['Message', this._getMessage(err)],
+                ['Filename', this._getFilenameWithPosition(err)],
+                ['Stack', this._getStack(err)],
+                ['Page url', window.location.href],
+                ['Refferer', document.referrer],
+                ['User-agent', settings.userAgent || navigator.userAgent],
+                ['Screen size', [screen.width, screen.height, screen.colorDepth].join('×')],
+                ['Screen orientation', typeof orientation === 'string' ? orientation : orientation.type],
+                ['Cookie enabled', navigator.cookieEnabled]
+            ];
+
+        var text = '';
+        for (var i = 0; i < props.length; i++) {
+            var item = props[i];
+            text += item[0] + ': ' + item[1] + '\n';
+        }
+
+        if (settings.templateDetailedMessage) {
+            text = settings.templateDetailedMessage.replace(/\{message\}/, text);
+        }
+
+        return text;
     },
     _getExtFilename: function(e) {
         var html = this.escapeHTML(this._getFilenameWithPosition(e));
@@ -365,11 +406,15 @@ var showJSError = {
         return typeof value !== 'undefined' ? value : defaultValue;
     },
     _getFilenameWithPosition: function(e) {
-        return e.filename ?
-            e.filename +
-            ':' + this._get(e.lineno, '') +
-            ':' + this._get(e.colno, '')
-            : '';
+        var text = e.filename || '';
+        if (typeof e.lineno !== 'undefined') {
+            text += ':' + this._get(e.lineno, '');
+            if (typeof e.colno !== 'undefined') {
+                text += ':' + this._get(e.colno, '');
+            }
+        }
+
+        return text;
     },
     _getMessage: function(e) {
         var msg = e.message;
