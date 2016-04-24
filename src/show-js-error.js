@@ -365,7 +365,8 @@ var showJSError = {
         };
     },
     _getDetailedMessage: function(err) {
-        var screen = typeof window.screen === 'object' ? window.screen : {},
+        var settings = this.settings,
+            screen = typeof window.screen === 'object' ? window.screen : {},
             orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '',
             props = [
                 ['Title', err.title || this._getTitle()],
@@ -374,7 +375,7 @@ var showJSError = {
                 ['Stack', this._getStack(err)],
                 ['Page url', window.location.href],
                 ['Refferer', document.referrer],
-                ['User-agent', this.settings.userAgent || navigator.userAgent],
+                ['User-agent', settings.userAgent || navigator.userAgent],
                 ['Screen size', [screen.width, screen.height, screen.colorDepth].join('×')],
                 ['Screen orientation', typeof orientation === 'string' ? orientation : orientation.type],
                 ['Cookie enabled', navigator.cookieEnabled]
@@ -384,6 +385,10 @@ var showJSError = {
         for (var i = 0; i < props.length; i++) {
             var item = props[i];
             text += item[0] + ': ' + item[1] + '\n';
+        }
+
+        if (settings.templateDetailedMessage) {
+            text = settings.templateDetailedMessage.replace(/\{message\}/, text);
         }
 
         return text;
