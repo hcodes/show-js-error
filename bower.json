@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": [
     "dist/show-js-error.js",
     "dist/show-js-error.custom.js",
