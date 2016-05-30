@@ -7,6 +7,7 @@ var showJSError = {
      * @param {Object} [settings]
      * @param {String} [settings.title]
      * @param {String} [settings.userAgent]
+     * @param {String} [settings.copyText]
      * @param {String} [settings.sendText]
      * @param {String} [settings.sendUrl]
      * @param {String} [settings.additionalText]
@@ -256,7 +257,7 @@ var showJSError = {
             name: 'copy',
             props: {
                 type: 'button',
-                value: 'Copy',
+                value: this.settings.copyText || 'Copy',
                 onclick: function() {
                     that.copyText();
                 }
