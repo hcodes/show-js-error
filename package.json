@@ -28,10 +28,10 @@
     "node": ">= 0.12"
   },
   "devDependencies": {
-    "gulp": "3.9.x",
+    "gulp": "3.x",
     "gulp-concat": "2.6.x",
-    "gulp-less": "3.0.x",
-    "eslint": "2.2.x"
+    "gulp-less": "3.1.x",
+    "eslint": "2.x"
   },
   "scripts": {
     "test": "npm run eslint",
