@@ -97,7 +97,10 @@
 .show-js-error__prev,
 .show-js-error__next,
 .show-js-error__num {
-  font-size: 9px;
+  font-size: 11px;
+}
+.show-js-error__next {
+  margin-left: 1px;
 }
 .show-js-error__num {
   margin-right: 5px;

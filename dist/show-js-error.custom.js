@@ -311,15 +311,6 @@ var showJSError = {
             container: this._arrows
         });
 
-        this._num = this.elem({
-            tag: 'span',
-            name: 'num',
-            props: {
-                innerHTML: this._i + 1
-            },
-            container: this._arrows
-        });
-
         this._next = this.elem({
             tag: 'input',
             name: 'next',
@@ -334,6 +325,15 @@ var showJSError = {
 
                     that._update();
                 }
+            },
+            container: this._arrows
+        });
+
+        this._num = this.elem({
+            tag: 'span',
+            name: 'num',
+            props: {
+                innerHTML: this._i + 1
             },
             container: this._arrows
         });
@@ -477,7 +477,7 @@ var showJSError = {
         }
 
         this._prev.disabled = !this._i;
-        this._num.innerHTML = this._i + 1;
+        this._num.innerHTML = (this._i + 1) + '&thinsp;/&thinsp;' + this._buffer.length;
         this._next.disabled = this._i === this._buffer.length - 1;
 
         this._show();
