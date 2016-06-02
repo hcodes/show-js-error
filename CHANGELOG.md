@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.0
+- Added output of total number of errors.
+- Increased size of buttons.
+
 ## v1.4.0
 Added ability to change text for button copy.
 
