@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.0
+Added links to MDN and Stack Overflow for help.
+
 ## v1.5.0
 - Added output of total number of errors.
 - Increased size of buttons.
