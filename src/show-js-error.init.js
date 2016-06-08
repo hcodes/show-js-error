@@ -1,3 +1,4 @@
 showJSError.init({
-    userAgent: navigator.userAgent
+    userAgent: navigator.userAgent,
+    helpLinks: true
 });

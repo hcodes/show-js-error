@@ -87,13 +87,15 @@
     }
 
     & &__filename,
-    & &__ua
+    & &__ua,
+    & &__help
     {
         display: none;
     }
 
     &__body_detailed &__filename,
-    &__body_detailed &__ua
+    &__body_detailed &__ua,
+    &__body_detailed &__help
     {
         display: block;
     }
@@ -111,6 +113,13 @@
         padding: 5px;
         background: #ffe1ec;
         white-space: pre-wrap;
+    }
+
+    &__help a
+    {
+        font-size: 11px;
+
+        margin-right: 6px;
     }
 
     &__actions
