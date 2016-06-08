@@ -67,12 +67,11 @@
   color: #666;
 }
 .show-js-error .show-js-error__filename {
-  margin-top: 3px;
-  margin-bottom: 3px;
-  border: 1px solid #faa;
+  margin: 3px 0 3px -2px;
   padding: 5px;
-  background: #ffe1ec;
   white-space: pre-wrap;
+  border: 1px solid #faa;
+  background: #ffe1ec;
 }
 .show-js-error__help a {
   font-size: 11px;
