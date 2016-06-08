@@ -11,6 +11,7 @@ var showJSError = {
      * @param {String} [settings.sendText]
      * @param {String} [settings.sendUrl]
      * @param {String} [settings.additionalText]
+     * @param {Boolean} [settings.helpLinks]
      */
     init: function(settings) {
         var that = this;
@@ -216,6 +217,33 @@ var showJSError = {
             },
             container: this._body
         });
+
+        if (this.settings.helpLinks) {
+            this._helpLinks = this.elem({
+                name: 'help',
+                container: this._body
+            });
+
+            this._mdn = this.elem({
+                tag: 'a',
+                name: 'mdn',
+                props: {
+                    target: '_blank',
+                    innerHTML: 'MDN'
+                },
+                container: this._helpLinks
+            });
+
+            this._stackoverflow = this.elem({
+                tag: 'a',
+                name: 'stackoverflow',
+                props: {
+                    target: '_blank',
+                    innerHTML: 'Stack Overflow'
+                },
+                container: this._helpLinks
+            });
+        }
 
         this._filename = this.elem({
             name: 'filename',
@@ -474,6 +502,11 @@ var showJSError = {
 
         if (this._buffer.length > 1) {
             this._arrows.className = this.elemClass('arrows', 'visible');
+        }
+
+        if (this._helpLinks) {
+            this._mdn.href = 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(e.message || e.stack || '');
+            this._stackoverflow.href = 'https://stackoverflow.com/search?q=' + encodeURIComponent('[js] ' + (e.message || e.stack || ''));
         }
 
         this._prev.disabled = !this._i;

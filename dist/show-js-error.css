@@ -54,11 +54,13 @@
   padding: 5px 8px 5px 8px;
 }
 .show-js-error .show-js-error__filename,
-.show-js-error .show-js-error__ua {
+.show-js-error .show-js-error__ua,
+.show-js-error .show-js-error__help {
   display: none;
 }
 .show-js-error__body_detailed .show-js-error__filename,
-.show-js-error__body_detailed .show-js-error__ua {
+.show-js-error__body_detailed .show-js-error__ua,
+.show-js-error__body_detailed .show-js-error__help {
   display: block;
 }
 .show-js-error .show-js-error__additional-text {
@@ -71,6 +73,10 @@
   padding: 5px;
   background: #ffe1ec;
   white-space: pre-wrap;
+}
+.show-js-error__help a {
+  font-size: 11px;
+  margin-right: 6px;
 }
 .show-js-error__actions {
   padding: 3px 5px;
