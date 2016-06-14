@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Show js errors</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="stylesheet" href="../dist/show-js-error.css" />
+        <script src="../dist/show-js-error.custom.js"></script>
+        <script>
+            showJSError.init({
+                sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}',
+                userAgent: navigator.userAgent
+            });
+        </script>
+    </head>
+    <body>
+        <script>
+        (function() {
+            var stack = '';
+
+            for (var i = 0; i < 100; i++) {
+                stack += 'Long long long stack\n';
+            }
+
+            showJSError.show({
+                title: 'My title',
+                message: 'My message',
+                stack: stack
+            });
+        })();
+        </script>
+    </body>
+</html>

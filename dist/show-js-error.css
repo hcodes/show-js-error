@@ -67,6 +67,8 @@
   color: #666;
 }
 .show-js-error .show-js-error__filename {
+  overflow-y: auto;
+  max-height: 15em;
   margin: 3px 0 3px -2px;
   padding: 5px;
   white-space: pre-wrap;
