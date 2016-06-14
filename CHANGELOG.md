@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.1
+Fixed height for long stacks.
+
 ## v1.6.0
 Added links to MDN and Stack Overflow for help.
 
