@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.2
+Fixed z-index for the message.
+
 ## v1.6.1
 Fixed height for long stacks.
 
