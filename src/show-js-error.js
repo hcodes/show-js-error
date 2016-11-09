@@ -52,7 +52,8 @@ var showJSError = {
                 window.addEventListener('error', this._onerrorLoading, true);
             }
         } else {
-            var oldOnError = window.onerror;
+            this._oldOnError = window.onerror;
+
             window.onerror = function(message, filename, lineno, colno, error) {
                 this._onerror({
                     message: message,
@@ -62,11 +63,36 @@ var showJSError = {
                     error: error
                 });
 
-                if (typeof oldOnError === 'function') {
-                    oldOnError.apply(window, arguments);
+                if (typeof that._oldOnError === 'function') {
+                    that._oldOnError.apply(window, arguments);
                 }
             };
         }
+    },
+    /**
+     * Destructor.
+     */
+    destruct: function() {
+        if (!this._inited) { return; }
+
+        if (window.addEventListener) {
+            window.removeEventListener('error', this._onerror, false);
+
+            if (this.settings.errorLoading) {
+                window.removeEventListener('error', this._onerrorLoading, true);
+            }
+        } else {
+            window.onerror = this._oldOnError || null;
+            delete this._oldOnError;
+        }
+
+        if (document.body && this._container) {
+            document.body.removeChild(this._container);
+        }
+
+        this._buffer = [];
+
+        this._inited = false;
     },
     /**
      * Show error message.
