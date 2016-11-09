@@ -27,18 +27,11 @@ var showJSError = {
         this._i = 0;
         this._buffer = [];
 
+        // Chrome or Firefox
+        this._hasViewSource = !!window.chrome || typeof InstallTrigger !== 'undefined';
+
         this._onerror = function(e) {
-            var error = e;
-
-            if (!e.bubbles && e.target && e.target.tagName) {
-                if (that.settings.errorLoading) {
-                    error = that._errorLoading(e);
-                } else {
-                    return;
-                }
-            }
-
-            that._buffer.push(error);
+            that._buffer.push(e);
             if (that._isLast) {
                 that._i = that._buffer.length - 1;
             }
@@ -46,8 +39,18 @@ var showJSError = {
             that._update();
         };
 
+        this._onerrorLoading = function(e) {
+            if (!e.bubbles && e.target && e.target.tagName) {
+                that._onerror(that._errorLoading(e));
+            }
+        };
+
         if (window.addEventListener) {
-            window.addEventListener('error', this._onerror, true);
+            window.addEventListener('error', this._onerror, false);
+
+            if (this.settings.errorLoading) {
+                window.addEventListener('error', this._onerrorLoading, true);
+            }
         } else {
             var oldOnError = window.onerror;
             window.onerror = function(message, filename, lineno, colno, error) {
@@ -423,10 +426,14 @@ var showJSError = {
         return text;
     },
     _getExtFilename: function(e) {
-        var html = this.escapeHTML(this._getFilenameWithPosition(e));
-        if (e.filename && e.filename.search(/^https?:|file:/) !== -1) {
-            return '<a target="_blank" href="view-source:' +
-                this.escapeHTML(e.filename) + '">' + html + '</a>';
+        var filename = e.filename,
+            html = this.escapeHTML(this._getFilenameWithPosition(e));
+
+        if (filename && filename.search(/^(https?|file):/) > -1) {
+            return '<a target="_blank" href="' +
+                // view-source protocol is not supported with file:
+                this._getViewSource(filename) +
+                this.escapeHTML(filename) + '">' + html + '</a>';
         } else {
             return html;
         }
@@ -464,6 +471,18 @@ var showJSError = {
     _show: function() {
         this._container.className = this.elemClass('', 'visible');
     },
+    _highlightLinks: function(text) {
+        var that = this;
+
+        return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
+            var url = $2 + $3;
+
+            return $1 + '<a target="_blank" href="' + that._getViewSource(url) + url + '">' + url + '</a>';
+        });
+    },
+    _getViewSource: function(url) {
+        return this._hasViewSource && url.search(/^file:/) === -1 ? 'view-source:' : '';
+    },
     _update: function() {
         if (!this._appended) {
             this._append();
@@ -475,7 +494,7 @@ var showJSError = {
             filename;
 
         if (stack) {
-            filename = this.escapeHTML(stack);
+            filename = this._highlightLinks(this.escapeHTML(stack));
         } else {
             filename = this._getExtFilename(e);
         }
