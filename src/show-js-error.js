@@ -39,18 +39,8 @@ var showJSError = {
             that._update();
         };
 
-        this._onerrorLoading = function(e) {
-            if (!e.bubbles && e.target && e.target.tagName) {
-                that._onerror(that._errorLoading(e));
-            }
-        };
-
         if (window.addEventListener) {
             window.addEventListener('error', this._onerror, false);
-
-            if (this.settings.errorLoading) {
-                window.addEventListener('error', this._onerrorLoading, true);
-            }
         } else {
             this._oldOnError = window.onerror;
 
@@ -77,10 +67,6 @@ var showJSError = {
 
         if (window.addEventListener) {
             window.removeEventListener('error', this._onerror, false);
-
-            if (this.settings.errorLoading) {
-                window.removeEventListener('error', this._onerrorLoading, true);
-            }
         } else {
             window.onerror = this._oldOnError || null;
             delete this._oldOnError;
@@ -408,19 +394,6 @@ var showJSError = {
                 document.attachEvent('onload', append);
             }
         }
-    },
-    _errorLoading: function(e) {
-        var tagName = (e.target.tagName || '').toLowerCase(),
-            preparedTagName = {
-                img: 'image',
-                link: 'css'
-            }[tagName];
-
-        return {
-            title: 'Error loading',
-            message: 'Error loading ' + (preparedTagName || tagName),
-            filename: e.target.src || e.target.href
-        };
     },
     _getDetailedMessage: function(err) {
         var settings = this.settings,
