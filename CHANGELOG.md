@@ -2,7 +2,7 @@
 
 ## v1.7.0
 - Highlighting links in e.stack
-- view-source protocol not supported in Safari
+- Fixed using view-source protocol in links
 - Removed settings.errorLoading
 
 ## v1.6.2
