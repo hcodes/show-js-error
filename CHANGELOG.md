@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.7.0
+- Highlighting links in e.stack
+- view-source protocol not supported in Safari
+- Removed settings.errorLoading
+
 ## v1.6.2
 Fixed z-index for the message.
 
