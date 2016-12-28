@@ -27,9 +27,6 @@ var showJSError = {
         this._i = 0;
         this._buffer = [];
 
-        // Chrome or Firefox
-        this._hasViewSource = !!window.chrome || typeof InstallTrigger !== 'undefined';
-
         this._onerror = function(e) {
             that._buffer.push(e);
             if (that._isLast) {
@@ -430,8 +427,6 @@ var showJSError = {
 
         if (filename && filename.search(/^(https?|file):/) > -1) {
             return '<a target="_blank" href="' +
-                // view-source protocol is not supported with file:
-                this._getViewSource(filename) +
                 this.escapeHTML(filename) + '">' + html + '</a>';
         } else {
             return html;
@@ -476,11 +471,8 @@ var showJSError = {
         return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
             var url = $2 + $3;
 
-            return $1 + '<a target="_blank" href="' + that._getViewSource(url) + url + '">' + url + '</a>';
+            return $1 + '<a target="_blank" href="' + url + '">' + url + '</a>';
         });
-    },
-    _getViewSource: function(url) {
-        return this._hasViewSource && url.search(/^file:/) === -1 ? 'view-source:' : '';
     },
     _update: function() {
         if (!this._appended) {
