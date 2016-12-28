@@ -1,9 +1,13 @@
 # Changelog
 
+## v1.8.0
+- Removed support for view-source protocol.
+- Added minified version.
+
 ## v1.7.0
-- Highlighting links in e.stack
-- Fixed using view-source protocol in links
-- Removed settings.errorLoading
+- Highlighting links in e.stack.
+- Fixed using view-source protocol in links.
+- Removed settings.errorLoading.
 
 ## v1.6.2
 Fixed z-index for the message.
