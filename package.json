@@ -23,10 +23,13 @@
     "node": ">= 4.0"
   },
   "devDependencies": {
+    "eslint": "3.x",
     "gulp": "3.x",
+    "gulp-cleancss": "^0.2.2",
     "gulp-concat": "2.6.x",
     "gulp-less": "3.2.x",
-    "eslint": "3.x"
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
   },
   "scripts": {
     "test": "eslint ."
