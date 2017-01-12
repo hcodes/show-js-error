@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.8.1
+Small fix in bower.json.
+
 ## v1.8.0
 - Removed support for view-source protocol.
 - Added minified version.
