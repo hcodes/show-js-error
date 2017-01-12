@@ -4,7 +4,6 @@
   "version": "1.8.0",
   "main": [
     "dist/show-js-error.js",
-    "dist/show-js-error.custom.js",
     "dist/show-js-error.css"
   ],
   "authors": [
