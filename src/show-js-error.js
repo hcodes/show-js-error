@@ -14,13 +14,14 @@ var showJSError = {
      * @param {Boolean} [settings.helpLinks]
      */
     init: function(settings) {
-        var that = this;
-
-        this.settings = settings || {};
-
         if (this._inited) {
             return;
         }
+
+        var that = this,
+            isAndroidOrIOS = /(Android|iPhone|iPod|iPad)/i.test(navigator.userAgent);
+
+        this.settings = settings || {};
 
         this._inited = true;
         this._isLast = true;
@@ -28,6 +29,10 @@ var showJSError = {
         this._buffer = [];
 
         this._onerror = function(e) {
+            if (isAndroidOrIOS && e && e.message === 'Script error.' && !e.lineno && !e.filename) {
+                return;
+            }
+
             that._buffer.push(e);
             if (that._isLast) {
                 that._i = that._buffer.length - 1;
@@ -42,7 +47,7 @@ var showJSError = {
             this._oldOnError = window.onerror;
 
             window.onerror = function(message, filename, lineno, colno, error) {
-                this._onerror({
+                that._onerror({
                     message: message,
                     filename: filename,
                     lineno: lineno,
@@ -466,8 +471,6 @@ var showJSError = {
         this._container.className = this.elemClass('', 'visible');
     },
     _highlightLinks: function(text) {
-        var that = this;
-
         return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
             var url = $2 + $3;
 
