@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",

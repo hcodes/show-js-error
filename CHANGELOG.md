@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.9.0
+Ignore "Script error." for old Android and iOS.
+
 ## v1.8.1
 Small fix in bower.json.
 
