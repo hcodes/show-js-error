@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.10.0
+Support for Node.js module system.
+
 ## v1.9.0
 Ignore "Script error." for old Android and iOS.
 
