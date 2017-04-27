@@ -1,6 +1,7 @@
 gulpfile.js
 .*
 coverage/**
-dist/**
+src/**
+dist/*.min.js
 node_modules/**
 tests/**

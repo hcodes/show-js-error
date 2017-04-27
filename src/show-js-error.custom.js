@@ -11,10 +11,5 @@
 }(this, function() {
     //=include main.js
 
-    showJSError.init({
-        userAgent: navigator.userAgent,
-        helpLinks: true
-    });
-
     return showJSError;
 }));

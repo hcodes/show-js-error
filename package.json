@@ -7,6 +7,7 @@
     "email": "hcodes@yandex.ru",
     "url": "https://github.com/hcodes/"
   },
+  "main": "dist/show-js-error.js",
   "homepage": "https://github.com/hcodes/show-js-error",
   "license": "MIT",
   "repository": {
@@ -23,15 +24,16 @@
     "node": ">= 4.0"
   },
   "devDependencies": {
-    "eslint": "3.x",
-    "gulp": "3.x",
+    "eslint": "^3.19.0",
     "gulp-cleancss": "^0.2.2",
-    "gulp-concat": "2.6.x",
-    "gulp-less": "3.3.x",
+    "gulp-concat": "^2.6.1",
+    "gulp-include": "^2.3.1",
+    "gulp-less": "^3.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0"
   },
   "scripts": {
+    "build": "gulp",
     "test": "eslint ."
   },
   "files": [

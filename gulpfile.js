@@ -3,6 +3,7 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const cleancss = require('gulp-cleancss');
+const include = require('gulp-include');
 const less = require('gulp-less');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
@@ -10,7 +11,8 @@ const destDir = './dist/';
 
 gulp.task('less', function() {
     return gulp
-        .src('src/show-js-error.less')
+        .src('src/main.less')
+        .pipe(rename('show-js-error.css'))
         .pipe(less())
         .pipe(gulp.dest(destDir));
 });
@@ -25,18 +27,17 @@ gulp.task('less-min', ['less'], function() {
 
 gulp.task('js', function() {
     return gulp
-        .src([
-            'src/show-js-error.js',
-            'src/show-js-error.init.js'
-        ])
+        .src('src/show-js-error.js')
+        .pipe(include())
         .pipe(concat('show-js-error.js'))
         .pipe(gulp.dest(destDir));
 });
 
 gulp.task('js-custom', function() {
     return gulp
-        .src('src/show-js-error.js')
-        .pipe(rename('show-js-error.custom.js'))
+        .src('src/show-js-error.custom.js')
+        .pipe(include())
+        .pipe(concat('show-js-error.custom.js'))
         .pipe(gulp.dest(destDir));
 });
 
