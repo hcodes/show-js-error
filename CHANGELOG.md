@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.1
+- Updated README for npmjs.com.
+
 ## v2.0.0
 - Removed bower support.
 - Drop support for old nodejs versions.
