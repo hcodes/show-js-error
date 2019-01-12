@@ -2,6 +2,7 @@ Show js error
 =============
 
 [![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
+[![Build Status](https://img.shields.io/travis/hcodes/show-js-error.svg?style=flat)](https://travis-ci.org/hcodes/show-js-error)
 [![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
 [![Dependency Status](https://img.shields.io/david/hcodes/show-js-error.svg)](https://david-dm.org/hcodes/show-js-error)
 
