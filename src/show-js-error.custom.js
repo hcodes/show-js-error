@@ -1,1 +1,1 @@
-export { default as showJSError } from './main';
+export { default as default } from './main';

@@ -1,9 +1,9 @@
 /*! show-js-error | © 2019 Denis Seleznev | MIT License */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-    typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.showJSError = {}));
-}(this, function (exports) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = global || self, global.showJSError = factory());
+}(this, function () { 'use strict';
 
     var showJSError = { // eslint-disable-line no-unused-vars
         /**
@@ -535,8 +535,6 @@
         }
     };
 
-    exports.showJSError = showJSError;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
+    return showJSError;
 
 }));
