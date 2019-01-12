@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.10.1
+Updated dev deps in package.json.
+
 ## v1.10.0
 Support for Node.js module system.
 
