@@ -1,4 +1,4 @@
-var showJSError = {
+var showJSError = { // eslint-disable-line no-unused-vars
     /**
      * Initialize.
      *
@@ -178,7 +178,7 @@ var showJSError = {
      * @returns {String}
      */
     escapeHTML: function(text) {
-        return (text || '').replace(/[&<>"'\/]/g, function(sym) {
+        return (text || '').replace(/[&<>"'/]/g, function(sym) {
             return {
                 '&': '&amp;',
                 '<': '&lt;',

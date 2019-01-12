@@ -8,5 +8,12 @@
         "node": true,
         "amd": true
     },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "globals": {
+        "showJSError": true
+    },
     "extends": "eslint:recommended"
 }
