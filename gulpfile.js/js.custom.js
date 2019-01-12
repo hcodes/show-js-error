@@ -4,19 +4,19 @@ const
     rollup = require('rollup'),
     paths = require('./paths');
 
-function js() {
+function jsCustom() {
     return rollup.rollup({
-            input: paths.js,
+            input: paths.jsCustom,
             output: {
                 dir: paths.dest,
                 format: 'umd',
-                name: 'showJSError'
+                name: 'showJSError'            
             }
     }).then((data) => data.write({
-        file: `${paths.dest}/show-js-error.js`,
+        file: `${paths.dest}/show-js-error.custom.js`,
         format: 'umd',
         name: 'showJSError'
     }));
 }
 
-module.exports = js;
+module.exports = jsCustom;

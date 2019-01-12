@@ -1,24 +1,26 @@
 'use strict';
 
-const gulp = require('gulp');
-const cssnano = require('gulp-cssnano');
-const less = require('gulp-less');
-const rename = require('gulp-rename');
-const paths = require('./paths');
+const
+    gulp = require('gulp'),
+    cssnano = require('gulp-cssnano'),
+    less = require('gulp-less'),
+    rename = require('gulp-rename'),
+    paths = require('./paths');
 
 function css() {
     return gulp
         .src(paths.css)
-        .pipe(rename('show-js-error.css'))
         .pipe(less())
         .pipe(gulp.dest(paths.dest));
 }
 
 function cssMin() {
     return gulp
-        .src(`${paths.dest}/show-js-error.css`)
+        .src(`${paths.dest}/*.css`)
         .pipe(cssnano())
-        .pipe(rename('show-js-error.min.css'))
+        .pipe(rename((path) => {
+            path.basename += '.min';
+        }))
         .pipe(gulp.dest(paths.dest));
 }
 

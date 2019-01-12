@@ -527,3 +527,5 @@ var showJSError = { // eslint-disable-line no-unused-vars
         this._show();
     }
 };
+
+export default showJSError;
