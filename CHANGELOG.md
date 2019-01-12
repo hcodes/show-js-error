@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.0
+- Removed bower support.
+- Drop support for old nodejs versions.
+- Fixes for builds.
+
 ## v1.10.1
 Updated dev deps in package.json.
 
