@@ -1,4 +1,4 @@
-/*! show-js-error | © 2017 Denis Seleznev | MIT License */
+/*! show-js-error | © 2019 Denis Seleznev | MIT License */
 (function(root, factory) {
     /* istanbul ignore next */
     if (typeof define === 'function' && define.amd) {
