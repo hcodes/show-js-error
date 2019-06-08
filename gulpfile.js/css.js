@@ -2,7 +2,8 @@
 
 const
     gulp = require('gulp'),
-    cssnano = require('gulp-cssnano'),
+    cssnano = require('cssnano'),
+    postcss = require('gulp-postcss'),    
     less = require('gulp-less'),
     rename = require('gulp-rename'),
     paths = require('./paths');
@@ -17,7 +18,9 @@ function css() {
 function cssMin() {
     return gulp
         .src(`${paths.dest}/*.css`)
-        .pipe(cssnano())
+        .pipe(postcss([
+            cssnano()
+        ]))        
         .pipe(rename((path) => {
             path.basename += '.min';
         }))

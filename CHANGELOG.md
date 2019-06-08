@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.2
+Updated dev deps in package.json.
+
 ## v2.0.1
 - Updated README for npmjs.com.
 
