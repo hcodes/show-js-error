@@ -38,11 +38,17 @@
   },
   "scripts": {
     "build": "gulp",
-    "test": "eslint ."
+    "test": "eslint .",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.189.0"
+  }
 }
