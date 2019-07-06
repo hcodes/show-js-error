@@ -141,6 +141,7 @@ var showJSError = { // eslint-disable-line no-unused-vars
             props = data.props;
 
         for (var i in props) {
+            // eslint-disable-next-line no-prototype-builtins
             if (props.hasOwnProperty(i)) {
                 el[i] = props[i];
             }
