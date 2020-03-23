@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -26,15 +26,15 @@
   "devDependencies": {
     "cssnano": "^4.1.10",
     "del": "^5.1.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.8.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-less": "^4.0.1",
     "gulp-postcss": "^8.0.0",
-    "gulp-rename": "^1.4.0",
+    "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-uglify": "^3.0.2",
-    "rollup": "^1.22.0"
+    "rollup": "^2.1.0"
   },
   "scripts": {
     "build": "gulp",

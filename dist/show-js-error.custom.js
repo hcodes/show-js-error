@@ -1,9 +1,9 @@
-/*! show-js-error | © 2019 Denis Seleznev | MIT License */
+/*! show-js-error | © 2020 Denis Seleznev | MIT License */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
     (global = global || self, global.showJSError = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
     var showJSError = { // eslint-disable-line no-unused-vars
         /**
@@ -538,4 +538,4 @@
 
     return showJSError;
 
-}));
+})));
