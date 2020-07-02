@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Show js errors</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="stylesheet" href="../dist/show-js-error.css" />
+        <script src="../dist/show-js-error.custom.js"></script>
+        <script>
+            showJSError.init({
+                copyText: 'Copy to clipboard',
+                sendText: 'Send 🐛',
+                sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}',
+                userAgent: navigator.userAgent,
+                helpLinks: true
+            });
+        </script>
+    </head>
+    <body>
+        <script>
+            new Promise(function(resolve, reject) {
+                var a = b + c;
+            }).then(function() {
+                console.log('then');
+            });
+        </script>
+    </body>
+</html>

@@ -5,7 +5,163 @@
     (global = global || self, global.showJSError = factory());
 }(this, (function () { 'use strict';
 
-    var showJSError = { // eslint-disable-line no-unused-vars
+    var screen = typeof window.screen === 'object' ? window.screen : {};
+
+    function getScreenSize() {
+        return [screen.width, screen.height, screen.colorDepth].join('×');
+    }
+
+    function getScreenOrientation() {
+        var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '';
+
+        return typeof orientation === 'string' ? orientation : orientation.type;
+    }
+
+    /**
+     * Copy error message to clipboard.
+     */
+    function copyText(text) {
+        var textarea = document.createElement('textarea');
+        textarea.innerHTML = text;
+        document.body.appendChild(textarea);
+
+        try {
+            textarea.select();
+            document.execCommand('copy');
+        } catch (e) {
+            alert('Copying text is not supported in this browser.');
+        }
+
+        document.body.removeChild(textarea);
+    }
+
+    /**
+     * Create a elem.
+     *
+     * @param {Object} data
+     * @param {String} data.name
+     * @param {DOMElement} data.container
+     * @param {String} [data.tag]
+     * @param {Object} [data.props]
+     * @returns {DOMElement}
+     */
+    function elem(data) {
+        var el = document.createElement(data.tag || 'div'),
+            props = data.props;
+
+        for (var i in props) {
+            // eslint-disable-next-line no-prototype-builtins
+            if (props.hasOwnProperty(i)) {
+                el[i] = props[i];
+            }
+        }
+
+        el.className = elemClass(data.name);
+
+        data.container.appendChild(el);
+
+        return el;
+    }
+
+    /**
+     * Build className for elem.
+     *
+     * @param {String} [name]
+     * @param {String} [mod]
+     * @returns {String}
+     */
+    function elemClass(name, mod) {
+        var cl = 'show-js-error';
+        if (name) {
+            cl += '__' + name;
+        }
+
+        if (mod) {
+            cl += ' ' + cl + '_' + mod;
+        }
+
+        return cl;
+    }
+
+    /**
+     * Escape HTML.
+     *
+     * @param {String} text
+     * @returns {String}
+     */
+    function escapeHTML(text) {
+        return (text || '').replace(/[&<>"'/]/g, function(sym) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                '\'': '&#39;',
+                '/': '&#x2F;'
+            }[sym];
+        });
+    }
+
+    function getStack(err) {
+        return (err.error && err.error.stack) || err.stack || '';
+    }
+
+    function getExtFilename(e) {
+        var filename = e.filename,
+            html = escapeHTML(getFilenameWithPosition(e));
+
+        if (filename && filename.search(/^(https?|file):/) > -1) {
+            return '<a target="_blank" href="' +
+                escapeHTML(filename) + '">' + html + '</a>';
+        } else {
+            return html;
+        }
+    }
+
+    function get(value, defaultValue) {
+        return typeof value === 'undefined' ? defaultValue : value;
+    }
+
+    function getFilenameWithPosition(e) {
+        var text = e.filename || '';
+        if (typeof e.lineno !== 'undefined') {
+            text += ':' + get(e.lineno, '');
+            if (typeof e.colno !== 'undefined') {
+                text += ':' + get(e.colno, '');
+            }
+        }
+
+        return text;
+    }
+
+    function getMessage(e) {
+        var msg = e.message;
+
+        // IE
+        if (e.error && e.error.name && 'number' in e.error) {
+            msg = e.error.name + ': ' + msg;
+        }
+
+        return msg;
+    }
+
+    function highlightLinks(text) {
+        return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
+            var url = $2 + $3;
+
+            return $1 + '<a target="_blank" href="' + url + '">' + url + '</a>';
+        });
+    }
+
+    function getMdnUrl(q) {
+        return 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(q);
+    }
+
+    function getStackOverflowUrl(q) {
+        return 'https://stackoverflow.com/search?q=' + encodeURIComponent('[js] ' + q);
+    }
+
+    var showJSError = {
         /**
          * Initialize.
          *
@@ -46,8 +202,22 @@
                 that._update();
             };
 
+            this._onunhandledrejection = function(e) {
+                var reason = e.reason;
+
+                that._onerror({
+                    message: 'Unhandled promise rejection: ' + reason.message,
+                    colno: reason.colno,
+                    error: reason,
+                    filename: reason.filename,
+                    lineno: reason.lineno,
+                    stack: reason.stack,
+                });
+            };
+
             if (window.addEventListener) {
                 window.addEventListener('error', this._onerror, false);
+                window.addEventListener('unhandledrejection', this._onunhandledrejection, false);
             } else {
                 this._oldOnError = window.onerror;
 
@@ -74,6 +244,7 @@
 
             if (window.addEventListener) {
                 window.removeEventListener('error', this._onerror, false);
+                window.removeEventListener('unhandledrejection', this._onunhandledrejection, false);
             } else {
                 window.onerror = this._oldOnError || null;
                 delete this._oldOnError;
@@ -105,97 +276,8 @@
          */
         hide: function() {
             if (this._container) {
-                this._container.className = this.elemClass('');
+                this._container.className = elemClass('');
             }
-        },
-        /**
-         * Copy error message to clipboard.
-         */
-        copyText: function() {
-            var err = this._buffer[this._i],
-                text = this._getDetailedMessage(err),
-                body = document.body,
-                textarea = this.elem({
-                    name: 'textarea',
-                    tag: 'textarea',
-                    props: {
-                        innerHTML: text
-                    },
-                    container: body
-                });
-
-            try {
-                textarea.select();
-                document.execCommand('copy');
-            } catch (e) {
-                alert('Copying text is not supported in this browser.');
-            }
-
-            body.removeChild(textarea);
-        },
-        /**
-         * Create a elem.
-         *
-         * @param {Object} data
-         * @param {String} data.name
-         * @param {DOMElement} data.container
-         * @param {String} [data.tag]
-         * @param {Object} [data.props]
-         * @returns {DOMElement}
-         */
-        elem: function(data) {
-            var el = document.createElement(data.tag || 'div'),
-                props = data.props;
-
-            for (var i in props) {
-                // eslint-disable-next-line no-prototype-builtins
-                if (props.hasOwnProperty(i)) {
-                    el[i] = props[i];
-                }
-            }
-
-            el.className = this.elemClass(data.name);
-
-            data.container.appendChild(el);
-
-            return el;
-        },
-        /**
-         * Build className for elem.
-         *
-         * @param {String} [name]
-         * @param {String} [mod]
-         * @returns {String}
-         */
-        elemClass: function(name, mod) {
-            var cl = 'show-js-error';
-            if (name) {
-                cl += '__' + name;
-            }
-
-            if (mod) {
-                cl += ' ' + cl + '_' + mod;
-            }
-
-            return cl;
-        },
-        /**
-         * Escape HTML.
-         *
-         * @param {String} text
-         * @returns {String}
-         */
-        escapeHTML: function(text) {
-            return (text || '').replace(/[&<>"'/]/g, function(sym) {
-                return {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    '\'': '&#39;',
-                    '/': '&#x2F;'
-                }[sym];
-            });
         },
         /**
          * Toggle view (shortly/detail).
@@ -205,10 +287,10 @@
             if (body) {
                 if (this._toggleDetailed) {
                     this._toggleDetailed = false;
-                    body.className = this.elemClass('body');
+                    body.className = elemClass('body');
                 } else {
                     this._toggleDetailed = true;
-                    body.className = this.elemClass('body', 'detailed');
+                    body.className = elemClass('body', 'detailed');
                 }
             }
         },
@@ -216,9 +298,9 @@
             var that = this;
 
             this._container = document.createElement('div');
-            this._container.className = this.elemClass('');
+            this._container.className = elemClass('');
 
-            this._title = this.elem({
+            this._title = elem({
                 name: 'title',
                 props: {
                     innerHTML: this._getTitle()
@@ -226,12 +308,12 @@
                 container: this._container
             });
 
-            this._body = this.elem({
+            this._body = elem({
                 name: 'body',
                 container: this._container
             });
 
-            this._message = this.elem({
+            this._message = elem({
                 name: 'message',
                 props: {
                     onclick: function() {
@@ -242,12 +324,12 @@
             });
 
             if (this.settings.helpLinks) {
-                this._helpLinks = this.elem({
+                this._helpLinks = elem({
                     name: 'help',
                     container: this._body
                 });
 
-                this._mdn = this.elem({
+                this._mdn = elem({
                     tag: 'a',
                     name: 'mdn',
                     props: {
@@ -257,7 +339,7 @@
                     container: this._helpLinks
                 });
 
-                this._stackoverflow = this.elem({
+                this._stackoverflow = elem({
                     tag: 'a',
                     name: 'stackoverflow',
                     props: {
@@ -268,26 +350,26 @@
                 });
             }
 
-            this._filename = this.elem({
+            this._filename = elem({
                 name: 'filename',
                 container: this._body
             });
 
             if (this.settings.userAgent) {
-                this._ua = this.elem({
+                this._ua = elem({
                     name: 'ua',
                     container: this._body
                 });
             }
 
             if (this.settings.additionalText) {
-                this._additionalText = this.elem({
+                this._additionalText = elem({
                     name: 'additional-text',
                     container: this._body
                 });
             }
 
-            this.elem({
+            elem({
                 name: 'close',
                 props: {
                     innerHTML: '×',
@@ -298,26 +380,27 @@
                 container: this._container
             });
 
-            this._actions = this.elem({
+            this._actions = elem({
                 name: 'actions',
                 container: this._container
             });
 
-            this.elem({
+            elem({
                 tag: 'input',
                 name: 'copy',
                 props: {
                     type: 'button',
                     value: this.settings.copyText || 'Copy',
                     onclick: function() {
-                        that.copyText();
+                        var err = that._buffer[that._i];
+                        copyText(that._getDetailedMessage(err));
                     }
                 },
                 container: this._actions
             });
 
             if (this.settings.sendUrl) {
-                this._sendLink = this.elem({
+                this._sendLink = elem({
                     tag: 'a',
                     name: 'send-link',
                     props: {
@@ -327,7 +410,7 @@
                     container: this._actions
                 });
 
-                this._send = this.elem({
+                this._send = elem({
                     tag: 'input',
                     name: 'send',
                     props: {
@@ -338,13 +421,13 @@
                 });
             }
 
-            this._arrows = this.elem({
+            this._arrows = elem({
                 tag: 'span',
                 name: 'arrows',
                 container: this._actions
             });
 
-            this._prev = this.elem({
+            this._prev = elem({
                 tag: 'input',
                 name: 'prev',
                 props: {
@@ -362,7 +445,7 @@
                 container: this._arrows
             });
 
-            this._next = this.elem({
+            this._next = elem({
                 tag: 'input',
                 name: 'next',
                 props: {
@@ -380,7 +463,7 @@
                 container: this._arrows
             });
 
-            this._num = this.elem({
+            this._num = elem({
                 tag: 'span',
                 name: 'num',
                 props: {
@@ -390,6 +473,7 @@
             });
 
             var append = function() {
+                document.removeEventListener('DOMContentLoaded', append, false);
                 document.body.appendChild(that._container);
             };
 
@@ -405,18 +489,16 @@
         },
         _getDetailedMessage: function(err) {
             var settings = this.settings,
-                screen = typeof window.screen === 'object' ? window.screen : {},
-                orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '',
                 props = [
-                    ['Title', err.title || this._getTitle()],
-                    ['Message', this._getMessage(err)],
-                    ['Filename', this._getFilenameWithPosition(err)],
-                    ['Stack', this._getStack(err)],
+                    ['Title', this._getTitle(err)],
+                    ['Message', getMessage(err)],
+                    ['Filename', getFilenameWithPosition(err)],
+                    ['Stack', getStack(err)],
                     ['Page url', window.location.href],
                     ['Refferer', document.referrer],
                     ['User-agent', settings.userAgent || navigator.userAgent],
-                    ['Screen size', [screen.width, screen.height, screen.colorDepth].join('×')],
-                    ['Screen orientation', typeof orientation === 'string' ? orientation : orientation.type],
+                    ['Screen size', getScreenSize()],
+                    ['Screen orientation', getScreenOrientation()],
                     ['Cookie enabled', navigator.cookieEnabled]
                 ];
 
@@ -432,56 +514,11 @@
 
             return text;
         },
-        _getExtFilename: function(e) {
-            var filename = e.filename,
-                html = this.escapeHTML(this._getFilenameWithPosition(e));
-
-            if (filename && filename.search(/^(https?|file):/) > -1) {
-                return '<a target="_blank" href="' +
-                    this.escapeHTML(filename) + '">' + html + '</a>';
-            } else {
-                return html;
-            }
-        },
-        _get: function(value, defaultValue) {
-            return typeof value !== 'undefined' ? value : defaultValue;
-        },
-        _getFilenameWithPosition: function(e) {
-            var text = e.filename || '';
-            if (typeof e.lineno !== 'undefined') {
-                text += ':' + this._get(e.lineno, '');
-                if (typeof e.colno !== 'undefined') {
-                    text += ':' + this._get(e.colno, '');
-                }
-            }
-
-            return text;
-        },
-        _getMessage: function(e) {
-            var msg = e.message;
-
-            // IE
-            if (e.error && e.error.name && 'number' in e.error) {
-                msg = e.error.name + ': ' + msg;
-            }
-
-            return msg;
-        },
-        _getStack: function(err) {
-            return (err.error && err.error.stack) || err.stack || '';
-        },
-        _getTitle: function() {
-            return this.settings.title || 'JavaScript error';
+        _getTitle: function(error) {
+            return error && error.title || this.settings.title || 'JavaScript error';
         },
         _show: function() {
-            this._container.className = this.elemClass('', 'visible');
-        },
-        _highlightLinks: function(text) {
-            return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
-                var url = $2 + $3;
-
-                return $1 + '<a target="_blank" href="' + url + '">' + url + '</a>';
-            });
+            this._container.className = elemClass('', 'visible');
         },
         _update: function() {
             if (!this._appended) {
@@ -490,42 +527,42 @@
             }
 
             var e = this._buffer[this._i],
-                stack = this._getStack(e),
+                stack = getStack(e),
                 filename;
 
             if (stack) {
-                filename = this._highlightLinks(this.escapeHTML(stack));
+                filename = highlightLinks(escapeHTML(stack));
             } else {
-                filename = this._getExtFilename(e);
+                filename = getExtFilename(e);
             }
 
-            this._title.innerHTML = this.escapeHTML(e.title || this._getTitle());
+            this._title.innerHTML = escapeHTML(this._getTitle(e));
 
-            this._message.innerHTML = this.escapeHTML(this._getMessage(e));
+            this._message.innerHTML = escapeHTML(getMessage(e));
 
             this._filename.innerHTML = filename;
 
             if (this._ua) {
-                this._ua.innerHTML = this.escapeHTML(this.settings.userAgent);
+                this._ua.innerHTML = escapeHTML(this.settings.userAgent);
             }
 
             if (this._additionalText) {
-                this._additionalText.innerHTML = this.escapeHTML(this.settings.additionalText);
+                this._additionalText.innerHTML = escapeHTML(this.settings.additionalText);
             }
 
             if (this._sendLink) {
                 this._sendLink.href = this.settings.sendUrl
-                    .replace(/\{title\}/, encodeURIComponent(this._getMessage(e)))
+                    .replace(/\{title\}/, encodeURIComponent(getMessage(e)))
                     .replace(/\{body\}/, encodeURIComponent(this._getDetailedMessage(e)));
             }
 
             if (this._buffer.length > 1) {
-                this._arrows.className = this.elemClass('arrows', 'visible');
+                this._arrows.className = elemClass('arrows', 'visible');
             }
 
             if (this._helpLinks) {
-                this._mdn.href = 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(e.message || e.stack || '');
-                this._stackoverflow.href = 'https://stackoverflow.com/search?q=' + encodeURIComponent('[js] ' + (e.message || e.stack || ''));
+                this._mdn.href = getMdnUrl(e.message || e.stack || '');
+                this._stackoverflow.href = getStackOverflowUrl('[js] ' + (e.message || e.stack || ''));
             }
 
             this._prev.disabled = !this._i;
