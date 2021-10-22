@@ -4,7 +4,6 @@
 [![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
 [![Build Status](https://img.shields.io/travis/hcodes/show-js-error.svg?style=flat)](https://travis-ci.org/hcodes/show-js-error)
 [![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
-[![Dependency Status](https://img.shields.io/david/hcodes/show-js-error.svg)](https://david-dm.org/hcodes/show-js-error)
 
 Shows a message when an js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, tablets and desktop.
