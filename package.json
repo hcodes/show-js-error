@@ -1,13 +1,14 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
     "url": "https://github.com/hcodes/"
   },
   "main": "dist/show-js-error.js",
+  "module": "dist/show-js-error.esm.js",
   "homepage": "https://github.com/hcodes/show-js-error",
   "license": "MIT",
   "repository": {
@@ -21,23 +22,22 @@
     "debug"
   ],
   "engines": {
-    "node": ">= 8.0"
+    "node": ">= 14.0"
   },
   "devDependencies": {
-    "cssnano": "^4.1.10",
-    "del": "^5.1.0",
-    "eslint": "^6.8.0",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-less": "^4.0.1",
-    "gulp-postcss": "^8.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-uglify": "^3.0.2",
-    "rollup": "^2.1.0"
+    "@rollup/plugin-typescript": "^8.3.0",
+    "del-cli": "^4.0.1",
+    "eslint": "^8.1.0",
+    "rollup": "^2.58.3",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
   },
   "scripts": {
-    "build": "gulp",
+    "clean": "del dist/*",
+    "build": "npm run clean && npm run ts && npm run css",
+    "inject:copyright": "",
+    "ts": "rollup --config rollup.config.js",
+    "css": "cp src/index.css dist/show-js-error.css",
     "test": "eslint ."
   },
   "files": [

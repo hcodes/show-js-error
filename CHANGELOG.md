@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.0.0
+- Dropped support for old browsers.
+- Code rewritten on TypeScript and added typings.
+- Added support for es6 modules.
+- Simplify building scripts.
+- Added methods: `.clear()`, `.toggleView()`.
+- Added support for CSP errors.
+- Removed settings: `copyText`, `sendText`, `additionalText`, `userAgent`, `helpLinks`.
+- `sendUrl` setting replaced with `reportUrl`.
+- Updated README.
+
 ## v2.0.2
 Updated dev deps in package.json.
 

@@ -1,583 +1,448 @@
-/*! show-js-error | © 2020 Denis Seleznev | MIT License */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global = global || self, global.showJSError = factory());
-}(this, (function () { 'use strict';
-
-    var screen = typeof window.screen === 'object' ? window.screen : {};
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.showJSError = factory());
+})(this, (function () { 'use strict';
 
     function getScreenSize() {
         return [screen.width, screen.height, screen.colorDepth].join('×');
     }
-
     function getScreenOrientation() {
-        var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation || '';
-
-        return typeof orientation === 'string' ? orientation : orientation.type;
+        return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
     }
-
-    /**
-     * Copy error message to clipboard.
-     */
-    function copyText(text) {
+    function copyTextToClipboard(text) {
         var textarea = document.createElement('textarea');
-        textarea.innerHTML = text;
+        textarea.value = text;
         document.body.appendChild(textarea);
-
         try {
             textarea.select();
             document.execCommand('copy');
-        } catch (e) {
+        }
+        catch (e) {
             alert('Copying text is not supported in this browser.');
         }
-
         document.body.removeChild(textarea);
     }
 
-    /**
-     * Create a elem.
-     *
-     * @param {Object} data
-     * @param {String} data.name
-     * @param {DOMElement} data.container
-     * @param {String} [data.tag]
-     * @param {Object} [data.props]
-     * @returns {DOMElement}
-     */
-    function elem(data) {
-        var el = document.createElement(data.tag || 'div'),
-            props = data.props;
-
-        for (var i in props) {
-            // eslint-disable-next-line no-prototype-builtins
-            if (props.hasOwnProperty(i)) {
-                el[i] = props[i];
-            }
+    function createElem(data) {
+        var elem = document.createElement(data.tag || 'div');
+        if (data.props) {
+            addProps(elem, data.props);
         }
-
-        el.className = elemClass(data.name);
-
-        data.container.appendChild(el);
-
-        return el;
+        elem.className = buildElemClass(data.name);
+        data.container.appendChild(elem);
+        return elem;
     }
-
-    /**
-     * Build className for elem.
-     *
-     * @param {String} [name]
-     * @param {String} [mod]
-     * @returns {String}
-     */
-    function elemClass(name, mod) {
-        var cl = 'show-js-error';
-        if (name) {
-            cl += '__' + name;
-        }
-
-        if (mod) {
-            cl += ' ' + cl + '_' + mod;
-        }
-
-        return cl;
-    }
-
-    /**
-     * Escape HTML.
-     *
-     * @param {String} text
-     * @returns {String}
-     */
-    function escapeHTML(text) {
-        return (text || '').replace(/[&<>"'/]/g, function(sym) {
-            return {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                '\'': '&#39;',
-                '/': '&#x2F;'
-            }[sym];
+    function addProps(elem, props) {
+        Object.keys(props).forEach(function (key) {
+            elem[key] = props[key];
         });
     }
-
-    function getStack(err) {
-        return (err.error && err.error.stack) || err.stack || '';
-    }
-
-    function getExtFilename(e) {
-        var filename = e.filename,
-            html = escapeHTML(getFilenameWithPosition(e));
-
-        if (filename && filename.search(/^(https?|file):/) > -1) {
-            return '<a target="_blank" href="' +
-                escapeHTML(filename) + '">' + html + '</a>';
-        } else {
-            return html;
+    function buildElemClass(name, mod) {
+        var elemName = 'show-js-error';
+        if (name) {
+            elemName += '__' + name;
         }
+        var className = elemName;
+        if (mod) {
+            Object.keys(mod).forEach(function (modName) {
+                var modValue = mod[modName];
+                if (modValue === false || modValue === null || modValue === undefined || modValue === '') {
+                    return;
+                }
+                if (mod[modName] === true) {
+                    className += ' ' + elemName + '_' + modName;
+                }
+                else {
+                    className += ' ' + elemName + '_' + modName + '_' + modValue;
+                }
+            });
+        }
+        return className;
     }
 
-    function get(value, defaultValue) {
+    function getStack(error) {
+        return error && error.stack || '';
+    }
+    function getMessage(error) {
+        return error && error.message || '';
+    }
+    function getValue(value, defaultValue) {
         return typeof value === 'undefined' ? defaultValue : value;
     }
-
-    function getFilenameWithPosition(e) {
-        var text = e.filename || '';
-        if (typeof e.lineno !== 'undefined') {
-            text += ':' + get(e.lineno, '');
-            if (typeof e.colno !== 'undefined') {
-                text += ':' + get(e.colno, '');
+    function getFilenameWithPosition(error) {
+        if (!error) {
+            return '';
+        }
+        var text = error.filename || '';
+        if (typeof error.lineno !== 'undefined') {
+            text += ':' + getValue(error.lineno, '');
+            if (typeof error.colno !== 'undefined') {
+                text += ':' + getValue(error.colno, '');
             }
         }
-
         return text;
     }
 
-    function getMessage(e) {
-        var msg = e.message;
-
-        // IE
-        if (e.error && e.error.name && 'number' in e.error) {
-            msg = e.error.name + ': ' + msg;
-        }
-
-        return msg;
-    }
-
-    function highlightLinks(text) {
-        return text.replace(/(at | \(|@)(https?|file)(:.*?)(?=:\d+:\d+\)?$)/gm, function($0, $1, $2, $3) {
-            var url = $2 + $3;
-
-            return $1 + '<a target="_blank" href="' + url + '">' + url + '</a>';
-        });
-    }
-
-    function getMdnUrl(q) {
-        return 'https://developer.mozilla.org/en-US/search?q=' + encodeURIComponent(q);
-    }
-
-    function getStackOverflowUrl(q) {
-        return 'https://stackoverflow.com/search?q=' + encodeURIComponent('[js] ' + q);
-    }
-
-    var showJSError = {
-        /**
-         * Initialize.
-         *
-         * @param {Object} [settings]
-         * @param {String} [settings.title]
-         * @param {String} [settings.userAgent]
-         * @param {String} [settings.copyText]
-         * @param {String} [settings.sendText]
-         * @param {String} [settings.sendUrl]
-         * @param {String} [settings.additionalText]
-         * @param {Boolean} [settings.helpLinks]
-         */
-        init: function(settings) {
-            if (this._inited) {
-                return;
-            }
-
-            var that = this,
-                isAndroidOrIOS = /(Android|iPhone|iPod|iPad)/i.test(navigator.userAgent);
-
-            this.settings = settings || {};
-
-            this._inited = true;
-            this._isLast = true;
-            this._i = 0;
-            this._buffer = [];
-
-            this._onerror = function(e) {
-                if (isAndroidOrIOS && e && e.message === 'Script error.' && !e.lineno && !e.filename) {
-                    return;
-                }
-
-                that._buffer.push(e);
-                if (that._isLast) {
-                    that._i = that._buffer.length - 1;
-                }
-
-                that._update();
+    var ShowJSError = /** @class */ (function () {
+        function ShowJSError() {
+            var _this = this;
+            this.elems = {};
+            this.state = {
+                appended: false,
+                detailed: false,
+                errorIndex: 0,
+                errorBuffer: [],
             };
-
-            this._onunhandledrejection = function(e) {
-                var reason = e.reason;
-
-                that._onerror({
-                    message: 'Unhandled promise rejection: ' + reason.message,
-                    colno: reason.colno,
-                    error: reason,
-                    filename: reason.filename,
-                    lineno: reason.lineno,
-                    stack: reason.stack,
+            this.onerror = function (event) {
+                var error = event.error;
+                _this.pushError({
+                    title: 'JavaScript Error',
+                    message: error.message,
+                    filename: error.filename,
+                    colno: error.colno,
+                    lineno: error.lineno,
+                    stack: error.stack,
                 });
             };
-
-            if (window.addEventListener) {
-                window.addEventListener('error', this._onerror, false);
-                window.addEventListener('unhandledrejection', this._onunhandledrejection, false);
-            } else {
-                this._oldOnError = window.onerror;
-
-                window.onerror = function(message, filename, lineno, colno, error) {
-                    that._onerror({
-                        message: message,
-                        filename: filename,
-                        lineno: lineno,
-                        colno: colno,
-                        error: error
-                    });
-
-                    if (typeof that._oldOnError === 'function') {
-                        that._oldOnError.apply(window, arguments);
-                    }
-                };
+            this.onsecuritypolicyviolation = function (error) {
+                _this.pushError({
+                    title: 'CSP Error',
+                    message: "blockedURI: " + (error.blockedURI || '') + "\n violatedDirective: " + error.violatedDirective + " || ''\n originalPolicy: " + (error.originalPolicy || ''),
+                    colno: error.columnNumber,
+                    filename: error.sourceFile,
+                    lineno: error.lineNumber,
+                });
+            };
+            this.onunhandledrejection = function (error) {
+                _this.pushError({
+                    title: 'Unhandled promise rejection',
+                    message: error.reason.message,
+                    colno: error.reason.colno,
+                    filename: error.reason.filename,
+                    lineno: error.reason.lineno,
+                    stack: error.reason.stack,
+                });
+            };
+            this.appendToBody = function () {
+                document.removeEventListener('DOMContentLoaded', _this.appendToBody, false);
+                if (_this.elems.container) {
+                    document.body.appendChild(_this.elems.container);
+                }
+            };
+            this.settings = this.prepareSettings();
+            window.addEventListener('error', this.onerror, false);
+            window.addEventListener('unhandledrejection', this.onunhandledrejection, false);
+            document.addEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
+        }
+        ShowJSError.prototype.destruct = function () {
+            window.removeEventListener('error', this.onerror, false);
+            window.removeEventListener('unhandledrejection', this.onunhandledrejection, false);
+            document.removeEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
+            document.removeEventListener('DOMContentLoaded', this.appendToBody, false);
+            if (document.body && this.elems.container) {
+                document.body.removeChild(this.elems.container);
             }
-        },
+            this.state.errorBuffer = [];
+            this.elems = {};
+        };
+        ShowJSError.prototype.setSettings = function (settings) {
+            this.settings = this.prepareSettings(settings);
+            if (this.state.appended) {
+                this.updateUI();
+            }
+        };
         /**
-         * Destructor.
+         * Show error panel with transmitted error.
          */
-        destruct: function() {
-            if (!this._inited) { return; }
-
-            if (window.addEventListener) {
-                window.removeEventListener('error', this._onerror, false);
-                window.removeEventListener('unhandledrejection', this._onunhandledrejection, false);
-            } else {
-                window.onerror = this._oldOnError || null;
-                delete this._oldOnError;
+        ShowJSError.prototype.show = function (error) {
+            if (!error) {
+                this.showUI();
+                return;
             }
-
-            if (document.body && this._container) {
-                document.body.removeChild(this._container);
+            if (typeof error === 'string') {
+                this.pushError({ message: error });
             }
-
-            this._buffer = [];
-
-            this._inited = false;
-        },
+            else {
+                this.pushError(typeof error === 'object' ?
+                    error :
+                    new Error(error));
+            }
+        };
         /**
-         * Show error message.
-         *
-         * @param {String|Object|Error} err
+         * Hide error panel.
          */
-        show: function(err) {
-            if (typeof err !== 'undefined') {
-                this._buffer.push(typeof err === 'object' ? err : new Error(err));
+        ShowJSError.prototype.hide = function () {
+            if (this.elems.container) {
+                this.elems.container.className = buildElemClass('', {
+                    hidden: true
+                });
             }
-
-            this._update();
-            this._show();
-        },
+        };
         /**
-         * Hide error message.
+         * Clear error panel.
          */
-        hide: function() {
-            if (this._container) {
-                this._container.className = elemClass('');
-            }
-        },
+        ShowJSError.prototype.clear = function () {
+            this.state.errorBuffer = [];
+            this.state.detailed = false;
+            this.setCurrentError(0);
+        };
         /**
          * Toggle view (shortly/detail).
          */
-        toggleDetailed: function() {
-            var body = this._body;
-            if (body) {
-                if (this._toggleDetailed) {
-                    this._toggleDetailed = false;
-                    body.className = elemClass('body');
-                } else {
-                    this._toggleDetailed = true;
-                    body.className = elemClass('body', 'detailed');
-                }
-            }
-        },
-        _append: function() {
-            var that = this;
-
-            this._container = document.createElement('div');
-            this._container.className = elemClass('');
-
-            this._title = elem({
-                name: 'title',
-                props: {
-                    innerHTML: this._getTitle()
-                },
-                container: this._container
-            });
-
-            this._body = elem({
-                name: 'body',
-                container: this._container
-            });
-
-            this._message = elem({
-                name: 'message',
-                props: {
-                    onclick: function() {
-                        that.toggleDetailed();
-                    }
-                },
-                container: this._body
-            });
-
-            if (this.settings.helpLinks) {
-                this._helpLinks = elem({
-                    name: 'help',
-                    container: this._body
-                });
-
-                this._mdn = elem({
-                    tag: 'a',
-                    name: 'mdn',
-                    props: {
-                        target: '_blank',
-                        innerHTML: 'MDN'
-                    },
-                    container: this._helpLinks
-                });
-
-                this._stackoverflow = elem({
-                    tag: 'a',
-                    name: 'stackoverflow',
-                    props: {
-                        target: '_blank',
-                        innerHTML: 'Stack Overflow'
-                    },
-                    container: this._helpLinks
-                });
-            }
-
-            this._filename = elem({
-                name: 'filename',
-                container: this._body
-            });
-
-            if (this.settings.userAgent) {
-                this._ua = elem({
-                    name: 'ua',
-                    container: this._body
-                });
-            }
-
-            if (this.settings.additionalText) {
-                this._additionalText = elem({
-                    name: 'additional-text',
-                    container: this._body
-                });
-            }
-
-            elem({
+        ShowJSError.prototype.toggleView = function () {
+            this.state.detailed = !this.state.detailed;
+            this.updateUI();
+        };
+        ShowJSError.prototype.prepareSettings = function (rawSettings) {
+            var settings = rawSettings || {};
+            return {
+                reportUrl: settings.reportUrl || '',
+                templateDetailedMessage: settings.templateDetailedMessage || '',
+            };
+        };
+        ShowJSError.prototype.pushError = function (error) {
+            this.state.errorBuffer.push(error);
+            this.state.errorIndex = this.state.errorBuffer.length - 1;
+            this.updateUI();
+        };
+        ShowJSError.prototype.appendUI = function () {
+            var _this = this;
+            var container = document.createElement('div');
+            container.className = buildElemClass('');
+            this.elems.container = container;
+            this.elems.close = createElem({
                 name: 'close',
                 props: {
-                    innerHTML: '×',
-                    onclick: function() {
-                        that.hide();
+                    innerText: '×',
+                    onclick: function () {
+                        _this.hide();
                     }
                 },
-                container: this._container
+                container: container
             });
-
-            this._actions = elem({
+            this.elems.title = createElem({
+                name: 'title',
+                props: {
+                    innerText: this.getTitle()
+                },
+                container: container
+            });
+            var body = createElem({
+                name: 'body',
+                container: container
+            });
+            this.elems.body = body;
+            this.elems.message = createElem({
+                name: 'message',
+                props: {
+                    onclick: function () {
+                        _this.toggleView();
+                    }
+                },
+                container: body
+            });
+            this.elems.filename = createElem({
+                name: 'filename',
+                container: body
+            });
+            this.createActions(body);
+            if (document.body) {
+                document.body.appendChild(container);
+            }
+            else {
+                document.addEventListener('DOMContentLoaded', this.appendToBody, false);
+            }
+        };
+        ShowJSError.prototype.createActions = function (container) {
+            var _this = this;
+            var actions = createElem({
                 name: 'actions',
-                container: this._container
+                container: container
             });
-
-            elem({
+            this.elems.actions = actions;
+            createElem({
                 tag: 'input',
                 name: 'copy',
                 props: {
                     type: 'button',
-                    value: this.settings.copyText || 'Copy',
-                    onclick: function() {
-                        var err = that._buffer[that._i];
-                        copyText(that._getDetailedMessage(err));
+                    value: 'Copy',
+                    onclick: function () {
+                        var error = _this.getCurrentError();
+                        copyTextToClipboard(_this.getDetailedMessage(error));
                     }
                 },
-                container: this._actions
+                container: actions
             });
-
-            if (this.settings.sendUrl) {
-                this._sendLink = elem({
-                    tag: 'a',
-                    name: 'send-link',
-                    props: {
-                        href: '',
-                        target: '_blank'
-                    },
-                    container: this._actions
-                });
-
-                this._send = elem({
-                    tag: 'input',
-                    name: 'send',
-                    props: {
-                        type: 'button',
-                        value: this.settings.sendText || 'Send'
-                    },
-                    container: this._sendLink
-                });
-            }
-
-            this._arrows = elem({
+            var reportLink = createElem({
+                tag: 'a',
+                name: 'report-link',
+                props: {
+                    href: '',
+                    target: '_blank'
+                },
+                container: actions
+            });
+            this.elems.reportLink = reportLink;
+            this.elems.report = createElem({
+                tag: 'input',
+                name: 'report',
+                props: {
+                    type: 'button',
+                    value: 'Report'
+                },
+                container: reportLink
+            });
+            this.createArrows(actions);
+        };
+        ShowJSError.prototype.createArrows = function (container) {
+            var _this = this;
+            var arrows = createElem({
                 tag: 'span',
                 name: 'arrows',
-                container: this._actions
+                container: container
             });
-
-            this._prev = elem({
+            this.elems.arrows = arrows;
+            this.elems.prev = createElem({
                 tag: 'input',
                 name: 'prev',
                 props: {
                     type: 'button',
                     value: '←',
-                    onclick: function() {
-                        that._isLast = false;
-                        if (that._i) {
-                            that._i--;
-                        }
-
-                        that._update();
+                    onclick: function () {
+                        _this.setCurrentError(_this.state.errorIndex - 1);
                     }
                 },
-                container: this._arrows
+                container: arrows
             });
-
-            this._next = elem({
+            this.elems.num = createElem({
+                tag: 'span',
+                name: 'num',
+                props: {
+                    innerText: this.state.errorIndex + 1
+                },
+                container: arrows
+            });
+            this.elems.next = createElem({
                 tag: 'input',
                 name: 'next',
                 props: {
                     type: 'button',
                     value: '→',
-                    onclick: function() {
-                        that._isLast = false;
-                        if (that._i < that._buffer.length - 1) {
-                            that._i++;
-                        }
-
-                        that._update();
+                    onclick: function () {
+                        _this.setCurrentError(_this.state.errorIndex + 1);
                     }
                 },
-                container: this._arrows
+                container: arrows
             });
-
-            this._num = elem({
-                tag: 'span',
-                name: 'num',
-                props: {
-                    innerHTML: this._i + 1
-                },
-                container: this._arrows
-            });
-
-            var append = function() {
-                document.removeEventListener('DOMContentLoaded', append, false);
-                document.body.appendChild(that._container);
-            };
-
-            if (document.body) {
-                append();
-            } else {
-                if (document.addEventListener) {
-                    document.addEventListener('DOMContentLoaded', append, false);
-                } else if (document.attachEvent) {
-                    document.attachEvent('onload', append);
-                }
+        };
+        ShowJSError.prototype.getDetailedMessage = function (error) {
+            var text = [
+                ['Title', this.getTitle(error)],
+                ['Message', getMessage(error)],
+                ['Filename', getFilenameWithPosition(error)],
+                ['Stack', getStack(error)],
+                ['Page url', window.location.href],
+                ['Refferer', document.referrer],
+                ['User-agent', navigator.userAgent],
+                ['Screen size', getScreenSize()],
+                ['Screen orientation', getScreenOrientation()],
+                ['Cookie enabled', navigator.cookieEnabled]
+            ].map(function (item) { return (item[0] + ': ' + item[1] + '\n'); }).join('');
+            if (this.settings.templateDetailedMessage) {
+                text = this.settings.templateDetailedMessage.replace(/\{message\}/, text);
             }
-        },
-        _getDetailedMessage: function(err) {
-            var settings = this.settings,
-                props = [
-                    ['Title', this._getTitle(err)],
-                    ['Message', getMessage(err)],
-                    ['Filename', getFilenameWithPosition(err)],
-                    ['Stack', getStack(err)],
-                    ['Page url', window.location.href],
-                    ['Refferer', document.referrer],
-                    ['User-agent', settings.userAgent || navigator.userAgent],
-                    ['Screen size', getScreenSize()],
-                    ['Screen orientation', getScreenOrientation()],
-                    ['Cookie enabled', navigator.cookieEnabled]
-                ];
-
-            var text = '';
-            for (var i = 0; i < props.length; i++) {
-                var item = props[i];
-                text += item[0] + ': ' + item[1] + '\n';
-            }
-
-            if (settings.templateDetailedMessage) {
-                text = settings.templateDetailedMessage.replace(/\{message\}/, text);
-            }
-
             return text;
-        },
-        _getTitle: function(error) {
-            return error && error.title || this.settings.title || 'JavaScript error';
-        },
-        _show: function() {
-            this._container.className = elemClass('', 'visible');
-        },
-        _update: function() {
-            if (!this._appended) {
-                this._append();
-                this._appended = true;
+        };
+        ShowJSError.prototype.getTitle = function (error) {
+            return error ? (error.title || 'Error') : 'No errors';
+        };
+        ShowJSError.prototype.showUI = function () {
+            if (this.elems.container) {
+                this.elems.container.className = buildElemClass('');
             }
-
-            var e = this._buffer[this._i],
-                stack = getStack(e),
-                filename;
-
-            if (stack) {
-                filename = highlightLinks(escapeHTML(stack));
-            } else {
-                filename = getExtFilename(e);
+        };
+        ShowJSError.prototype.hasStack = function () {
+            var error = this.getCurrentError();
+            return error && (error.stack || error.filename);
+        };
+        ShowJSError.prototype.getCurrentError = function () {
+            return this.state.errorBuffer[this.state.errorIndex];
+        };
+        ShowJSError.prototype.setCurrentError = function (index) {
+            var length = this.state.errorBuffer.length;
+            var newIndex = index;
+            if (newIndex > length - 1) {
+                newIndex = length - 1;
             }
-
-            this._title.innerHTML = escapeHTML(this._getTitle(e));
-
-            this._message.innerHTML = escapeHTML(getMessage(e));
-
-            this._filename.innerHTML = filename;
-
-            if (this._ua) {
-                this._ua.innerHTML = escapeHTML(this.settings.userAgent);
+            else if (newIndex < 0) {
+                newIndex = 0;
             }
-
-            if (this._additionalText) {
-                this._additionalText.innerHTML = escapeHTML(this.settings.additionalText);
+            this.state.errorIndex = newIndex;
+            this.updateUI();
+        };
+        ShowJSError.prototype.updateUI = function () {
+            var error = this.getCurrentError();
+            if (!this.state.appended) {
+                this.state.appended = true;
+                this.appendUI();
             }
-
-            if (this._sendLink) {
-                this._sendLink.href = this.settings.sendUrl
-                    .replace(/\{title\}/, encodeURIComponent(getMessage(e)))
-                    .replace(/\{body\}/, encodeURIComponent(this._getDetailedMessage(e)));
+            if (this.elems.body) {
+                this.elems.body.className = buildElemClass('body', {
+                    detailed: this.state.detailed,
+                    'no-stack': !this.hasStack(),
+                    hidden: !error,
+                });
             }
-
-            if (this._buffer.length > 1) {
-                this._arrows.className = elemClass('arrows', 'visible');
+            if (this.elems.title) {
+                this.elems.title.innerText = this.getTitle(error);
+                this.elems.title.className = buildElemClass('title', {
+                    'no-errors': !error
+                });
             }
-
-            if (this._helpLinks) {
-                this._mdn.href = getMdnUrl(e.message || e.stack || '');
-                this._stackoverflow.href = getStackOverflowUrl('[js] ' + (e.message || e.stack || ''));
+            if (this.elems.message) {
+                this.elems.message.innerText = getMessage(error);
             }
-
-            this._prev.disabled = !this._i;
-            this._num.innerHTML = (this._i + 1) + '&thinsp;/&thinsp;' + this._buffer.length;
-            this._next.disabled = this._i === this._buffer.length - 1;
-
-            this._show();
-        }
-    };
-
-    showJSError.init({
-        userAgent: navigator.userAgent,
-        helpLinks: true
-    });
+            if (this.elems.actions) {
+                this.elems.actions.className = buildElemClass('actions', { hidden: !error });
+            }
+            if (this.elems.reportLink) {
+                this.elems.reportLink.className = buildElemClass('report', {
+                    hidden: !this.settings.reportUrl
+                });
+            }
+            if (this.elems.reportLink) {
+                this.elems.reportLink.href = this.settings.reportUrl
+                    .replace(/\{title\}/, encodeURIComponent(getMessage(error)))
+                    .replace(/\{body\}/, encodeURIComponent(this.getDetailedMessage(error)));
+            }
+            if (this.elems.filename) {
+                this.elems.filename.className = buildElemClass('filename', { hidden: !error });
+                this.elems.filename.innerText = getStack(error) || getFilenameWithPosition(error);
+            }
+            this.updateArrows(error);
+            this.showUI();
+        };
+        ShowJSError.prototype.updateArrows = function (error) {
+            var length = this.state.errorBuffer.length;
+            var errorIndex = this.state.errorIndex;
+            if (this.elems.arrows) {
+                this.elems.arrows.className = buildElemClass('arrows', { hidden: !error });
+            }
+            if (this.elems.prev) {
+                this.elems.prev.disabled = !errorIndex;
+            }
+            if (this.elems.num) {
+                this.elems.num.innerText = (errorIndex + 1) + '\u2009/\u2009' + length;
+            }
+            if (this.elems.next) {
+                this.elems.next.disabled = errorIndex === length - 1;
+            }
+        };
+        return ShowJSError;
+    }());
+    var showJSError = new ShowJSError();
 
     return showJSError;
 
-})));
+}));
