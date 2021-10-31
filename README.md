@@ -5,6 +5,7 @@
 [![Build Status](https://img.shields.io/travis/hcodes/show-js-error.svg?style=flat)](https://travis-ci.org/hcodes/show-js-error)
 [![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
 [![Bundlephobia](https://badgen.net/bundlephobia/minzip/show-js-error)](https://bundlephobia.com/package/show-js-error)
+[![install size](https://packagephobia.com/badge?p=show-js-error)](https://packagephobia.com/result?p=show-js-error)
 [![Bundlephobia](https://badgen.net/bundlephobia/tree-shaking/show-js-error)](https://bundlephobia.com/package/show-js-error)
 
 Shows a message when an js error occurs in a browser.<br>
