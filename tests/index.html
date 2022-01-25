@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Show js error</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="stylesheet" href="../dist/show-js-error.css" />
+        <script src="../dist/show-js-error.js"></script>
+    </head>
+    <body>
+        <button onclick="jsError()">JavaScript error</button>
+        <button onclick="unhandledPromise()">Unhandled promise rejection</button>
+        <button onclick="cspError()">CSP error</button>
+        <br/><br/>
+        <button onclick="showJSError.show({ message: 'Hello error!', stack: 'No stack' })">.show({ message: 'Hello error!')</button>
+        <button onclick="showJSError.show()">.show()</button>
+        <button onclick="showJSError.hide()">.hide()</button>
+        <button onclick="showJSError.toggleView()">.toggleView()</button>
+        <button onclick="showJSError.clear()">.clear()</button>
+        <button onclick="showJSError.destruct()">.destruct()</button>
+        <script src="a.js"></script>
+        <script src="b.js"></script>
+        <script src="c.js"></script>
+        <script>
+            function d() {
+                var a = root;
+            }
+
+            a();
+        </script>
+        <script>
+            showJSError.setSettings({
+                reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
+            });
+
+            function jsError() {
+                a();
+            }
+
+            function unhandledPromise() {
+                new Promise(function(resolve, reject) {
+                    var a = b + c;
+                });
+            }
+
+            function cspError() {
+
+            }
+        </script>
+        <script>
+            var a = b;
+        </script>
+        <script>
+            var a = c;
+        </script>
+        <script>
+            var a = root;
+        </script>
+    </body>
+</html>

@@ -15,7 +15,11 @@ Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/ma
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
 
 ## Browsers
-Any.
+- Chrome
+- Firefox
+- Safari
+- MS Edge
+- IE >= 11
 
 ## Install
 ```
@@ -31,18 +35,41 @@ or
 
 ```html
 <link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
-<script src="./node_modules/show-js-error/dist/show-js-error.custom.js"></script>
-<script>
-    showJSError.init({
-        title: 'JavaScript error',
-        userAgent: navigator.userAgent,
-        sendText: 'Send 🐛',
-        sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
-    });
-</script>
 ```
 
-## Show custom error
+With default settings:
+```js
+import 'show-js-error'; // default settings
+```
+or with own settings:
+```js
+import { showJSError } from 'show-js-error';
+
+showJSError.setSettings({
+    reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
+});
+```
+
+## API
+
+### .setSettings(settings)
+Set settings for error panel.
+
+```js
+showJSError.setSettings({
+    reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}', // Default: ""
+    templateDetailedMessage: 'My title\n{message}',
+})
+```
+
+### .show(error?: Error | object | string)
+Show error panel.
+
+```js
+showJSError.show();
+```
+
+Show error panel with transmitted error.
 ```js
 showJSError.show({
     title: 'My title',
@@ -50,18 +77,24 @@ showJSError.show({
     filename: 'My filename',
     stack: 'My stack',
     lineno: 100,
-    colno: 3,
-    userAgent: 'OS X Yosemite, Safari 8'
+    colno: 3
 });
 
 // or
-showJSError.show('Hello error!');
+showJSError.show('My error');
 
 // or
-var err = new Error();
-showJSError.show(err);
-
+showJSError.show(new Error('My error'));
 ```
+
+### .hide()
+Hide error panel.
+
+### .toggleDetailed()
+Toggle detailed info about current error.
+
+### .destruct()
+Deattach error panel from page, remove global event listeners.
 
 ## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
 
