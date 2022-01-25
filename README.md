@@ -12,7 +12,7 @@ Shows a message when an js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, tablets and desktop.
 
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/simple.png?)<br><br>
-Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
+Detailed:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
 
 ## Browsers
 - Chrome
@@ -39,7 +39,7 @@ or
 
 With default settings:
 ```js
-import 'show-js-error'; // default settings
+import 'show-js-error'; // Default settings
 ```
 or with own settings:
 ```js
@@ -90,7 +90,10 @@ showJSError.show(new Error('My error'));
 ### .hide()
 Hide error panel.
 
-### .toggleDetailed()
+### .clear()
+Clear error panel.
+
+### .toggleView()
 Toggle detailed info about current error.
 
 ### .destruct()

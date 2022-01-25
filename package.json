@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
-  "description": "Show a message about a js error in any browser",
-  "version": "3.0.0",
+  "description": "Show a message about a js error",
+  "version": "3.1.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -9,6 +9,7 @@
   },
   "main": "dist/show-js-error.js",
   "module": "dist/show-js-error.esm.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/hcodes/show-js-error",
   "license": "MIT",
   "repository": {
@@ -22,15 +23,15 @@
     "debug"
   ],
   "engines": {
-    "node": ">= 14.0"
+    "node": ">= 12.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.0",
     "del-cli": "^4.0.1",
-    "eslint": "^8.1.0",
-    "rollup": "^2.58.3",
+    "eslint": "^8.7.0",
+    "rollup": "^2.66.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.5"
   },
   "scripts": {
     "clean": "del dist/*",
@@ -41,8 +42,9 @@
     "test": "eslint ."
   },
   "files": [
-    "dist",
+    "dist/**/*",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ]
 }

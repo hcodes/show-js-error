@@ -98,7 +98,7 @@
                 var error = event.error;
                 _this.pushError({
                     title: 'JavaScript Error',
-                    message: error.message,
+                    message: error.toString(),
                     filename: error.filename,
                     colno: error.colno,
                     lineno: error.lineno,
@@ -108,7 +108,7 @@
             this.onsecuritypolicyviolation = function (error) {
                 _this.pushError({
                     title: 'CSP Error',
-                    message: "blockedURI: " + (error.blockedURI || '') + "\n violatedDirective: " + error.violatedDirective + " || ''\n originalPolicy: " + (error.originalPolicy || ''),
+                    message: "blockedURI: ".concat(error.blockedURI || '', "\n violatedDirective: ").concat(error.violatedDirective, " || ''\n originalPolicy: ").concat(error.originalPolicy || ''),
                     colno: error.columnNumber,
                     filename: error.sourceFile,
                     lineno: error.lineNumber,

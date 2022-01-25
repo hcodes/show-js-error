@@ -1,9 +1,15 @@
 # Changelog
 
+## v3.1.0
+- Added TypeScript typings.
+- Small fixes for tests.
+- Updated README.
+
 ## v3.0.0
 - Dropped support for old browsers.
 - Code rewritten on TypeScript and added typings.
 - Added support for es6 modules.
+- Added support for CSP and unhandled promise rejection errors.
 - Simplify building scripts.
 - Added methods: `.clear()`, `.toggleView()`.
 - Added support for CSP errors.

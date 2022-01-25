@@ -91,7 +91,7 @@ class ShowJSError {
             const error = event.error;
             this.pushError({
                 title: 'JavaScript Error',
-                message: error.message,
+                message: error.toString(),
                 filename: error.filename,
                 colno: error.colno,
                 lineno: error.lineno,

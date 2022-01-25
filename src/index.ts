@@ -119,7 +119,7 @@ class ShowJSError {
     }
 
     /**
-     * Toggle view (shortly/detail).
+     * Toggle view (shortly/detailed).
      */
     public toggleView() {
         this.state.detailed = !this.state.detailed;
@@ -140,7 +140,7 @@ class ShowJSError {
 
         this.pushError({
             title: 'JavaScript Error',
-            message: error.message,
+            message: error.toString(),
             filename: error.filename,
             colno: error.colno,
             lineno: error.lineno,
