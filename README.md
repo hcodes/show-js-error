@@ -121,7 +121,7 @@ Hide error panel.
 Toggle detailed info about current error.
 
 ### .destruct()
-Deattach error panel from page, remove global event listeners.
+Detach error panel from page, remove global event listeners.
 
 ## Examples
 - [Simple](http://hcodes.github.io/show-js-error/tests/many.html)
