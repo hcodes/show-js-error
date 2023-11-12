@@ -3,11 +3,10 @@
 
 [![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
 [![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
-[![Bundlephobia](https://badgen.net/bundlephobia/minzip/show-js-error)](https://bundlephobia.com/package/show-js-error)
 [![install size](https://packagephobia.com/badge?p=show-js-error)](https://packagephobia.com/result?p=show-js-error)
 
 Shows a message when an js error occurs in a browser.<br>
-Useful for developing and testing your site on mobile phones, tablets and desktop.
+Useful for developing and testing your site on mobile phones, smart TV, tablets and desktop.
 
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/simple.png?)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
@@ -20,7 +19,7 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
 - [Small size](https://bundlephobia.com/package/show-js-error)
 - No dependencies
 - Short and detailed mode
-- Links with error hints on MDN and StackOverlow
+- Links with error hints on MDN and StackOverflow
 - UI
 - Integration with Github
 
