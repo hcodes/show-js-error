@@ -19,30 +19,50 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
 - MS Edge
 - IE >= 11
 
+## Support
+- Window errors
+- Unhanled rejections
+- CSP errors
+
 ## Install
 ```
 npm install show-js-error --save-dev
 ```
 
 ## Using
-```html
-<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
-<script src="./node_modules/show-js-error/dist/show-js-error.js"></script>
-```
-or
 
+### Browser:
+With default settings:
+```html
+<link rel="stylesheet" href="https://unpkg.com/show-js-error/dist/show-js-error.css" />
+<script src="https://unpkg.com/show-js-error/dist/show-js-error.js"></script>
+```
+or with own settings:
+```html
+<link rel="stylesheet" href="https://unpkg.com/show-js-error/dist/show-js-error.css" />
+<script src="https://unpkg.com/show-js-error/dist/show-js-error.js"></script>
+```
+```js
+window.showJSError.setSettings({
+    reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
+});
+```
+
+### ES6 or TypeScript
 ```html
 <link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
 ```
 
 With default settings:
 ```js
-import 'show-js-error'; // default settings
+import { ShowJSError } from 'show-js-error'; // default settings
+const showJSError = new ShowJSError();
 ```
 or with own settings:
 ```js
-import { showJSError } from 'show-js-error';
+import { ShowJSError } from 'show-js-error';
 
+const showJSError = new ShowJSError();
 showJSError.setSettings({
     reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
 });
@@ -59,6 +79,9 @@ showJSError.setSettings({
     templateDetailedMessage: 'My title\n{message}',
 })
 ```
+
+### .clear()
+Clear errors for error panel.
 
 ### .show(error?: Error | object | string)
 Show error panel.
@@ -88,7 +111,7 @@ showJSError.show(new Error('My error'));
 ### .hide()
 Hide error panel.
 
-### .toggleDetailed()
+### .toggleView()
 Toggle detailed info about current error.
 
 ### .destruct()
