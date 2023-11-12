@@ -12,17 +12,23 @@ Useful for developing and testing your site on mobile phones, tablets and deskto
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/simple.png?)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
 
+## Features
+- Support:
+    - Window errors
+    - Unhandled rejections
+    - CSP errors
+- [Small size](https://bundlephobia.com/package/show-js-error)
+- Short and detailed mode
+- Links with error hints on MDN and StackOverlow
+- UI
+- Integration with Github
+
 ## Browsers
 - Chrome
 - Mozilla Firefox
 - Apple Safari
 - Microsoft Edge
 - Internet Explorer >= 11
-
-## Support
-- Window errors
-- Unhanled rejections
-- CSP errors
 
 ## Install
 ```
