@@ -1,4 +1,4 @@
-⚠️ Show js error
+⚠️ Show JS Error
 =============
 
 [![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
@@ -37,7 +37,7 @@ npm install show-js-error --save-dev
 
 ## Using
 
-### Browser:
+### Browser
 With default settings:
 ```html
 <link rel="stylesheet" href="https://unpkg.com/show-js-error/dist/show-js-error.css" />
@@ -61,7 +61,7 @@ window.showJSError.setSettings({
 
 With default settings:
 ```js
-import { ShowJSError } from 'show-js-error'; // default settings
+import { ShowJSError } from 'show-js-error';
 const showJSError = new ShowJSError();
 ```
 or with own settings:
