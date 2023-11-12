@@ -2,6 +2,7 @@
 
 ## v3.0.0
 - Dropped support for old browsers.
+- Dropped default exports.
 - Code rewritten on TypeScript and added typings.
 - Added support for es6 modules.
 - Simplify building scripts.
