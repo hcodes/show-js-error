@@ -1,5 +1,9 @@
 {
+  "exclude": ["dist", "tools", "tests"],
   "compilerOptions": {
+    "outDir": "./dist/",
+    "declaration": true,
+    "declarationDir": ".",
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Projects */

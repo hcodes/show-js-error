@@ -1,11 +1,8 @@
 import { ShowJSError } from './ShowJSError';
-
 declare global {
     interface Window {
         showJSError: ShowJSError;
     }
 }
-
-const showJSError = new ShowJSError();
-
+declare const showJSError: ShowJSError;
 export default showJSError;

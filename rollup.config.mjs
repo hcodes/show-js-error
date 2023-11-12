@@ -11,7 +11,7 @@ export default [
     plugins: [typescript({ tsconfig: './tsconfig.json' })]
   },
   {
-    input: 'src/index.ts',
+    input: 'src/index.esm.ts',
     output: {
       format: 'es',
       file: './dist/show-js-error.esm.js'

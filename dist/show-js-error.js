@@ -108,7 +108,7 @@
             this.onsecuritypolicyviolation = function (error) {
                 _this.pushError({
                     title: 'CSP Error',
-                    message: "blockedURI: " + (error.blockedURI || '') + "\n violatedDirective: " + error.violatedDirective + " || ''\n originalPolicy: " + (error.originalPolicy || ''),
+                    message: "blockedURI: ".concat(error.blockedURI || '', "\n violatedDirective: ").concat(error.violatedDirective, " || ''\n originalPolicy: ").concat(error.originalPolicy || ''),
                     colno: error.columnNumber,
                     filename: error.sourceFile,
                     lineno: error.lineNumber,
@@ -441,6 +441,7 @@
         };
         return ShowJSError;
     }());
+
     var showJSError = new ShowJSError();
 
     return showJSError;
