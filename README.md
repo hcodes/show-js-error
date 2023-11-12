@@ -18,7 +18,7 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
     - CSP errors
 - [Small size](https://bundlephobia.com/package/show-js-error)
 - Short and detailed mode
-- Links with error hints on MDN and StackOverlow
+- Links with error hints on MDN and StackOverflow
 - UI
 - Integration with Github
 
