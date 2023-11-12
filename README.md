@@ -117,7 +117,9 @@ Toggle detailed info about current error.
 ### .destruct()
 Deattach error panel from page, remove global event listeners.
 
-## [Example](http://hcodes.github.io/show-js-error/tests/many.html)
+## Examples
+- [Simple](http://hcodes.github.io/show-js-error/tests/many.html)
+- [Advanced](http://hcodes.github.io/show-js-error/tests/index.html)
 
 ## [License](https://github.com/hcodes/show-js-error/blob/master/LICENSE)
 MIT License
