@@ -1,4 +1,4 @@
-⚠️ Show js error
+⚠️ Show JS Error
 =============
 
 [![NPM version](https://img.shields.io/npm/v/show-js-error.svg)](https://www.npmjs.com/package/show-js-error)
