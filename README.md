@@ -123,7 +123,7 @@ Toggle detailed info about current error.
 ### .destruct()
 Detach error panel from page, remove global event listeners.
 
-## Examples
+## [Examples](./tests)
 - [Simple](http://hcodes.github.io/show-js-error/tests/many.html)
 - [Advanced](http://hcodes.github.io/show-js-error/tests/index.html)
 
