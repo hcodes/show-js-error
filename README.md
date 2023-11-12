@@ -14,10 +14,10 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
 
 ## Browsers
 - Chrome
-- Firefox
-- Safari
-- MS Edge
-- IE >= 11
+- Mozilla Firefox
+- Apple Safari
+- Microsoft Edge
+- Internet Explorer >= 11
 
 ## Support
 - Window errors
