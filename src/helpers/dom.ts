@@ -7,7 +7,7 @@ export function getScreenOrientation(): string {
 }
 
 export function copyTextToClipboard(text: string) {
-    var textarea = document.createElement('textarea');
+    const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
 

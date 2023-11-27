@@ -479,4 +479,4 @@ export class ShowJSError {
             this.elems.next.disabled = errorIndex === length - 1;
         }
     }
-};
+}
