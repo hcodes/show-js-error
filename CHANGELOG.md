@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.0.0
+- Fixed package.json properties.
+- injected CSS to JS file.
+- Removed default export.
+
 ## v3.0.0
 - Dropped support for old browsers.
 - Dropped default exports.
