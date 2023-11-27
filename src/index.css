@@ -20,6 +20,10 @@
     background: #ffc1cc;
 }
 
+.show-js-error_size_big {
+    transform: scale(2.0) translate(25%, -25%);
+}
+
 .show-js-error_hidden {
     transition: opacity 0.3s, visibility 0s linear 0.3s;
 

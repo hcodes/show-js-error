@@ -20,3 +20,12 @@ export function copyTextToClipboard(text: string) {
 
     document.body.removeChild(textarea);
 }
+
+export function injectStyle(style: string) {
+    const styleNode = document.createElement('style');
+    document.body.appendChild(styleNode);
+
+    styleNode.textContent = style;
+
+    return styleNode;
+}
