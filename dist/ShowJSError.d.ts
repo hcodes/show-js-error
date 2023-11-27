@@ -2,6 +2,7 @@ import { ExtendedError } from './helpers/error';
 export interface ShowJSErrorSettings {
     reportUrl?: string;
     templateDetailedMessage?: string;
+    size?: 'big' | 'normal';
 }
 export interface ShowJSErrorElems {
     actions: HTMLDivElement;
@@ -28,6 +29,7 @@ export declare class ShowJSError {
     private elems;
     private settings;
     private state;
+    private styleNode?;
     constructor();
     destruct(): void;
     setSettings(settings: ShowJSErrorSettings): void;
