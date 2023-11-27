@@ -6,7 +6,7 @@ function getScreenOrientation() {
     return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
 }
 function copyTextToClipboard(text) {
-    var textarea = document.createElement('textarea');
+    const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
     try {
