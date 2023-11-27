@@ -1,13 +1,14 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
     "url": "https://github.com/hcodes/"
   },
   "type": "module",
+  "typings": "dist/index.esm.d.ts",
   "module": "dist/show-js-error.esm.js",
   "homepage": "https://github.com/hcodes/show-js-error",
   "license": "MIT",
@@ -23,7 +24,7 @@
   ],
   "exports": {
     "typings": "./dist/index.esm.d.ts",
-    "import": "./dist/index.esm.js"
+    "import": "./dist/show-js-error.esm.js"
   },
   "engines": {
     "node": ">= 14.0"
@@ -34,14 +35,17 @@
     "eslint": "^8.53.0",
     "rollup": "^4.4.0",
     "tslib": "^2.6.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "postcss-cli": "^10.1.0"      
   },
   "scripts": {
     "clean": "del dist/*",
-    "build": "npm run clean && npm run ts && npm run css",
-    "inject:copyright": "",
+    "build": "npm run clean && npm run ts && npm run css && npm run inject",
+    "css": "postcss --no-map src/*.css --dir dist",
+    "inject": "node ./tools/inject.mjs",
     "ts": "rollup --config rollup.config.mjs",
-    "css": "cp src/ShowJSError.css dist/show-js-error.css",
     "test": "eslint ."
   },
   "files": [
