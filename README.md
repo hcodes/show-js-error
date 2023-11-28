@@ -77,6 +77,7 @@ Set settings for error panel.
 showJSError.setSettings({
     reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}', // Default: ""
     templateDetailedMessage: 'My title\n{message}',
+    size: 'big' // for smart TV
 })
 ```
 
