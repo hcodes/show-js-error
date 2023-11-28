@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.0.1
+- Fixed typings.
+
 ## v4.0.0
 - Fixed package.json properties.
 - Injected CSS to JS file.
