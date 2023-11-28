@@ -17,6 +17,7 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
     - Unhandled rejections
     - CSP errors
 - [Small size](https://bundlephobia.com/package/show-js-error)
+- Only one JavaScript file
 - No dependencies
 - Short and detailed mode
 - Links with error hints on MDN and StackOverflow
@@ -40,12 +41,10 @@ npm install show-js-error --save-dev
 ### Browser
 With default settings:
 ```html
-<link rel="stylesheet" href="https://unpkg.com/show-js-error/dist/show-js-error.css" />
 <script src="https://unpkg.com/show-js-error/dist/show-js-error.js"></script>
 ```
 or with own settings:
 ```html
-<link rel="stylesheet" href="https://unpkg.com/show-js-error/dist/show-js-error.css" />
 <script src="https://unpkg.com/show-js-error/dist/show-js-error.js"></script>
 ```
 ```js
@@ -55,23 +54,18 @@ window.showJSError.setSettings({
 ```
 
 ### ES6 or TypeScript
-```html
-<link rel="stylesheet" href="./node_modules/show-js-error/dist/show-js-error.css" />
-```
-
 With default settings:
 ```js
-import { ShowJSError } from 'show-js-error';
-const showJSError = new ShowJSError();
+import 'show-js-error';
 ```
 or with own settings:
 ```js
-import { ShowJSError } from 'show-js-error';
-
-const showJSError = new ShowJSError();
+import { showJSError } from 'show-js-error';
 showJSError.setSettings({
     reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}'
 });
+
+showJSError.show(new Error('error'));
 ```
 
 ## API
@@ -83,6 +77,7 @@ Set settings for error panel.
 showJSError.setSettings({
     reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}', // Default: ""
     templateDetailedMessage: 'My title\n{message}',
+    size: 'big' // for smart TV
 })
 ```
 

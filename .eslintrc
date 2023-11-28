@@ -1,8 +1,11 @@
 {
-    "rules": {
-        "semi": [2, "always"],
-        "quotes": [2, "single"]
-    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "env": {
         "browser": true,
         "node": true,
@@ -14,6 +17,5 @@
     },
     "globals": {
         "showJSError": true
-    },
-    "extends": "eslint:recommended"
+    }
 }

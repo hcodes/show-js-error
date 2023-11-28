@@ -1,3 +1,4 @@
+/*! show-js-error | © 2023 Denis Seleznev | MIT License | https://github.com/hcodes/show-js-error/ */
 function getScreenSize() {
     return [screen.width, screen.height, screen.colorDepth].join('×');
 }
@@ -5,7 +6,7 @@ function getScreenOrientation() {
     return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
 }
 function copyTextToClipboard(text) {
-    var textarea = document.createElement('textarea');
+    const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
     try {
@@ -16,6 +17,12 @@ function copyTextToClipboard(text) {
         alert('Copying text is not supported in this browser.');
     }
     document.body.removeChild(textarea);
+}
+function injectStyle(style) {
+    const styleNode = document.createElement('style');
+    document.body.appendChild(styleNode);
+    styleNode.textContent = style;
+    return styleNode;
 }
 
 function createElem(data) {
@@ -78,6 +85,7 @@ function getFilenameWithPosition(error) {
     return text;
 }
 
+const STYLE = '.show-js-error{background:#ffc1cc;bottom:15px;color:#000;font-family:Arial,sans-serif;font-size:13px;left:15px;max-width:90vw;min-width:15em;opacity:1;position:fixed;transition:opacity .2s ease-out;transition-delay:0s;visibility:visible;z-index:10000000}.show-js-error_size_big{transform:scale(2) translate(25%,-25%)}.show-js-error_hidden{opacity:0;transition:opacity .3s,visibility 0s linear .3s;visibility:hidden}.show-js-error__title{background:#f66;color:#fff;font-weight:700;padding:4px 30px 4px 7px}.show-js-error__title_no-errors{background:#6b6}.show-js-error__message{cursor:pointer;display:inline}.show-js-error__message:before{background-color:#eee;border-radius:10px;content:"+";display:inline-block;font-size:10px;height:10px;line-height:10px;margin-bottom:2px;margin-right:5px;text-align:center;vertical-align:middle;width:10px}.show-js-error__body_detailed .show-js-error__message:before{content:"-"}.show-js-error__body_no-stack .show-js-error__message:before{display:none}.show-js-error__body_detailed .show-js-error__filename{display:block}.show-js-error__body_no-stack .show-js-error__filename{display:none}.show-js-error__close{color:#fff;cursor:pointer;font-size:20px;line-height:20px;padding:3px;position:absolute;right:2px;top:0}.show-js-error__body{line-height:19px;padding:5px 8px}.show-js-error__body_hidden{display:none}.show-js-error__filename{background:#ffe1ec;border:1px solid #faa;display:none;margin:3px 0 3px -2px;max-height:15em;overflow-y:auto;padding:5px;white-space:pre-wrap}.show-js-error__actions{border-top:1px solid #faa;margin-top:5px;padding:5px 0 3px}.show-js-error__actions_hidden{display:none}.show-js-error__arrows{margin-left:8px;white-space:nowrap}.show-js-error__arrows_hidden{display:none}.show-js-error__copy,.show-js-error__next,.show-js-error__num,.show-js-error__prev,.show-js-error__report{font-size:12px}.show-js-error__report_hidden{display:none}.show-js-error__next{margin-left:1px}.show-js-error__num{margin-left:5px;margin-right:5px}.show-js-error__copy,.show-js-error__report{margin-right:3px}.show-js-error input{padding:1px 2px}.show-js-error a,.show-js-error a:visited{color:#000;text-decoration:underline}.show-js-error a:hover{text-decoration:underline}';
 class ShowJSError {
     constructor() {
         this.elems = {};
@@ -88,7 +96,8 @@ class ShowJSError {
             errorBuffer: [],
         };
         this.onerror = (event) => {
-            const error = event.error;
+            const error = event.error ? event.error : event;
+            console.log(1, event);
             this.pushError({
                 title: 'JavaScript Error',
                 message: error.message,
@@ -120,6 +129,7 @@ class ShowJSError {
         this.appendToBody = () => {
             document.removeEventListener('DOMContentLoaded', this.appendToBody, false);
             if (this.elems.container) {
+                this.styleNode = injectStyle(STYLE);
                 document.body.appendChild(this.elems.container);
             }
         };
@@ -129,6 +139,7 @@ class ShowJSError {
         document.addEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
     }
     destruct() {
+        var _a;
         window.removeEventListener('error', this.onerror, false);
         window.removeEventListener('unhandledrejection', this.onunhandledrejection, false);
         document.removeEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
@@ -138,6 +149,10 @@ class ShowJSError {
         }
         this.state.errorBuffer = [];
         this.elems = {};
+        if (this.styleNode) {
+            (_a = this.styleNode.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this.styleNode);
+            this.styleNode = undefined;
+        }
     }
     setSettings(settings) {
         this.settings = this.prepareSettings(settings);
@@ -168,6 +183,7 @@ class ShowJSError {
     hide() {
         if (this.elems.container) {
             this.elems.container.className = buildElemClass('', {
+                size: this.settings.size,
                 hidden: true
             });
         }
@@ -190,6 +206,7 @@ class ShowJSError {
     prepareSettings(rawSettings) {
         const settings = rawSettings || {};
         return {
+            size: settings.size || 'normal',
             reportUrl: settings.reportUrl || '',
             templateDetailedMessage: settings.templateDetailedMessage || '',
         };
@@ -201,7 +218,9 @@ class ShowJSError {
     }
     appendUI() {
         const container = document.createElement('div');
-        container.className = buildElemClass('');
+        container.className = buildElemClass('', {
+            size: this.settings.size,
+        });
         this.elems.container = container;
         this.elems.close = createElem({
             name: 'close',
@@ -241,6 +260,7 @@ class ShowJSError {
         this.createActions(body);
         if (document.body) {
             document.body.appendChild(container);
+            this.styleNode = injectStyle(STYLE);
         }
         else {
             document.addEventListener('DOMContentLoaded', this.appendToBody, false);
@@ -349,7 +369,9 @@ class ShowJSError {
     }
     showUI() {
         if (this.elems.container) {
-            this.elems.container.className = buildElemClass('');
+            this.elems.container.className = buildElemClass('', {
+                size: this.settings.size,
+            });
         }
     }
     hasStack() {
@@ -431,4 +453,7 @@ class ShowJSError {
     }
 }
 
-export { ShowJSError };
+const showJSError = new ShowJSError();
+window.showJSError = showJSError;
+
+export { showJSError };

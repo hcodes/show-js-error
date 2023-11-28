@@ -1,5 +1,4 @@
 .*
-coverage/**
-dist/*.js
-node_modules/**
-tests/**
+dist
+node_modules
+tests

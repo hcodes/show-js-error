@@ -4,5 +4,4 @@ declare global {
         showJSError: ShowJSError;
     }
 }
-declare const showJSError: ShowJSError;
-export default showJSError;
+export declare const showJSError: ShowJSError;

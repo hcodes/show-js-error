@@ -7,7 +7,7 @@ export function getScreenOrientation(): string {
 }
 
 export function copyTextToClipboard(text: string) {
-    var textarea = document.createElement('textarea');
+    const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
 
@@ -19,4 +19,13 @@ export function copyTextToClipboard(text: string) {
     }
 
     document.body.removeChild(textarea);
+}
+
+export function injectStyle(style: string) {
+    const styleNode = document.createElement('style');
+    document.body.appendChild(styleNode);
+
+    styleNode.textContent = style;
+
+    return styleNode;
 }

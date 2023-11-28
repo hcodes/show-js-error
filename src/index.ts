@@ -6,6 +6,5 @@ declare global {
     }
 }
 
-const showJSError = new ShowJSError();
-
-export default showJSError;
+export const showJSError = new ShowJSError();
+window.showJSError = showJSError;

@@ -1,10 +1,11 @@
-import { getScreenSize, getScreenOrientation, copyTextToClipboard } from './helpers/dom';
+import { getScreenSize, getScreenOrientation, copyTextToClipboard, injectStyle } from './helpers/dom';
 import { createElem, buildElemClass } from './helpers/elem';
 import { getStack, getFilenameWithPosition, getMessage, ExtendedError } from './helpers/error';
 
 export interface ShowJSErrorSettings {
     reportUrl?: string;
     templateDetailedMessage?: string;
+    size?: 'big' | 'normal';
 }
 
 export interface ShowJSErrorElems {
@@ -34,6 +35,8 @@ export interface ShowJSErrorState {
     errorBuffer: ExtendedError[];
 }
 
+const STYLE = '{STYLE}';
+
 export class ShowJSError {
     private elems: Partial<ShowJSErrorElems> = {};
 
@@ -46,8 +49,10 @@ export class ShowJSError {
         errorBuffer: [],
     };
 
+    private styleNode?: HTMLStyleElement;
+
     constructor() {
-        this.settings = this.prepareSettings();
+        this.settings = this.prepareSettings();        
 
         window.addEventListener('error', this.onerror, false);
         window.addEventListener('unhandledrejection', this.onunhandledrejection, false);
@@ -66,6 +71,11 @@ export class ShowJSError {
 
         this.state.errorBuffer = [];
         this.elems = {};
+
+        if (this.styleNode) {
+            this.styleNode.parentNode?.removeChild(this.styleNode);
+            this.styleNode = undefined;
+        }
     }
 
     public setSettings(settings: ShowJSErrorSettings) {
@@ -103,6 +113,7 @@ export class ShowJSError {
     public hide() {
         if (this.elems.container) {
             this.elems.container.className = buildElemClass('', {
+                size: this.settings.size,
                 hidden: true
             });
         }
@@ -130,14 +141,16 @@ export class ShowJSError {
         const settings: ShowJSErrorSettings = rawSettings || {};
 
         return {
+            size: settings.size || 'normal',
             reportUrl: settings.reportUrl || '',
             templateDetailedMessage: settings.templateDetailedMessage || '',
         };
     }
 
     private onerror = (event: ErrorEvent) => {
-        const error = event.error;
+        const error = event.error ? event.error : event;
 
+        console.log(1, event);
         this.pushError({
             title: 'JavaScript Error',
             message: error.message,
@@ -178,7 +191,9 @@ export class ShowJSError {
 
     private appendUI() {
         const container = document.createElement('div');
-        container.className = buildElemClass('');
+        container.className = buildElemClass('', {
+            size: this.settings.size,
+        });
 
         this.elems.container = container;
 
@@ -227,6 +242,7 @@ export class ShowJSError {
 
         if (document.body) {
             document.body.appendChild(container);
+            this.styleNode = injectStyle(STYLE);
         } else {
             document.addEventListener('DOMContentLoaded', this.appendToBody, false);
         }
@@ -235,6 +251,7 @@ export class ShowJSError {
     private appendToBody = () => {
         document.removeEventListener('DOMContentLoaded', this.appendToBody, false);
         if (this.elems.container) {
+            this.styleNode = injectStyle(STYLE);
             document.body.appendChild(this.elems.container);
         }
     }
@@ -358,7 +375,9 @@ export class ShowJSError {
 
     private showUI() {
         if (this.elems.container) {
-            this.elems.container.className = buildElemClass('');
+            this.elems.container.className = buildElemClass('', {
+                size: this.settings.size,
+            });
         }
     }
 
@@ -460,4 +479,4 @@ export class ShowJSError {
             this.elems.next.disabled = errorIndex === length - 1;
         }
     }
-};
+}
