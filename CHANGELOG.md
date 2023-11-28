@@ -2,8 +2,9 @@
 
 ## v4.0.0
 - Fixed package.json properties.
-- injected CSS to JS file.
+- Injected CSS to JS file.
 - Removed default export.
+- Fixes for Safari.
 
 ## v3.0.0
 - Dropped support for old browsers.
