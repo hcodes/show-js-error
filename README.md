@@ -16,8 +16,7 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
     - Window errors
     - Unhandled rejections
     - CSP errors
-- [Small size](https://bundlephobia.com/package/show-js-error)
-- Only one JavaScript file
+- Small size
 - No dependencies
 - Short and detailed mode
 - Links with error hints on MDN and StackOverflow
