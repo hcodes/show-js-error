@@ -1,4 +1,4 @@
-/*! show-js-error | © 2023 Denis Seleznev | MIT License | https://github.com/hcodes/show-js-error/ */
+/*! show-js-error | © 2024 Denis Seleznev | MIT License | https://github.com/hcodes/show-js-error/ */
 function getScreenSize() {
     return [screen.width, screen.height, screen.colorDepth].join('×');
 }
@@ -134,6 +134,9 @@ class ShowJSError {
             }
         };
         this.settings = this.prepareSettings();
+        if (typeof window === 'undefined') {
+            return;
+        }
         window.addEventListener('error', this.onerror, false);
         window.addEventListener('unhandledrejection', this.onunhandledrejection, false);
         document.addEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
@@ -454,6 +457,8 @@ class ShowJSError {
 }
 
 const showJSError = new ShowJSError();
-window.showJSError = showJSError;
+if (typeof window !== 'undefined') {
+    window.showJSError = showJSError;
+}
 
 export { showJSError };
