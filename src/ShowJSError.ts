@@ -52,7 +52,11 @@ export class ShowJSError {
     private styleNode?: HTMLStyleElement;
 
     constructor() {
-        this.settings = this.prepareSettings();        
+        this.settings = this.prepareSettings();
+
+        if (typeof window === 'undefined') {
+            return;
+        }
 
         window.addEventListener('error', this.onerror, false);
         window.addEventListener('unhandledrejection', this.onunhandledrejection, false);

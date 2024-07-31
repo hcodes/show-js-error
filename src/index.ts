@@ -7,4 +7,7 @@ declare global {
 }
 
 export const showJSError = new ShowJSError();
-window.showJSError = showJSError;
+
+if (typeof window !== 'undefined') {
+    window.showJSError = showJSError;
+}
