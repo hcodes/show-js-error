@@ -8,6 +8,7 @@
 Shows a message when an js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, smart TV, tablets and desktop.
 
+## [Demo](http://hcodes.github.io/show-js-error/tests/index.html)
 Shortly:<br>![Shortly](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/simple.png?)<br><br>
 Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/master/images/detailed.png?)
 
