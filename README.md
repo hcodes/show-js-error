@@ -13,13 +13,12 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
 
 ## Features
 - Support:
-    - Window errors
+    - JavaScript errors
     - Unhandled rejections
     - CSP errors
 - Small size
 - No dependencies
 - Short and detailed mode
-- Links with error hints on MDN and StackOverflow
 - UI
 - Integration with Github
 
