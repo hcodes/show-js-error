@@ -1,7 +1,7 @@
 {
   "name": "show-js-error",
   "description": "Show a message about a js error in any browser",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -30,17 +30,17 @@
     "node": ">= 14.0"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.5",
+    "@rollup/plugin-typescript": "^11.1.6",
     "del-cli": "^5.1.0",
-    "eslint": "^8.54.0",
-    "rollup": "^4.6.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.2",
-    "autoprefixer": "^10.4.16",
-    "cssnano": "^6.0.1",
-    "postcss-cli": "^10.1.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.0",
-    "@typescript-eslint/parser": "^6.13.0"
+    "eslint": "^8.56.0",
+    "rollup": "^4.19.1",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.4",
+    "autoprefixer": "^10.4.19",
+    "cssnano": "^7.0.4",
+    "postcss-cli": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0"
   },
   "scripts": {
     "clean": "del dist/*",

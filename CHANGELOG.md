@@ -1,4 +1,7 @@
 # Changelog
+## v4.0.2
+- Fixes for SSR.
+- Updated dev deps in package.json.
 
 ## v4.0.1
 - Fixed typings.
