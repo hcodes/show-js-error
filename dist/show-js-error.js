@@ -101,7 +101,6 @@
             };
             this.onerror = function (event) {
                 var error = event.error ? event.error : event;
-                console.log(1, event);
                 _this.pushError({
                     title: 'JavaScript Error',
                     message: error.message,
