@@ -1,4 +1,7 @@
 # Changelog
+## v4.0.3
+Removed console.log. 
+
 ## v4.0.2
 - Fixes for SSR.
 - Updated dev deps in package.json.
