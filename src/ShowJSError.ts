@@ -154,7 +154,6 @@ export class ShowJSError {
     private onerror = (event: ErrorEvent) => {
         const error = event.error ? event.error : event;
 
-        console.log(1, event);
         this.pushError({
             title: 'JavaScript Error',
             message: error.message,
