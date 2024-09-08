@@ -48,7 +48,8 @@
     "css": "postcss --no-map src/*.css --dir dist",
     "inject": "node ./tools/inject.mjs",
     "ts": "rollup --config rollup.config.mjs",
-    "test": "eslint ."
+    "test": "eslint .",
+    "prepare": "npm run build"
   },
   "files": [
     "dist",
