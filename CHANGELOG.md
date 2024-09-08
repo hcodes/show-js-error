@@ -1,4 +1,8 @@
 # Changelog
+
+## v4.0.4
+Added ES5 mode for ESM, no need to babelify the package code.
+
 ## v4.0.3
 Removed console.log. 
 
