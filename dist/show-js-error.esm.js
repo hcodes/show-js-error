@@ -212,9 +212,13 @@ var ShowJSError = /** @class */ (function () {
             size: settings.size || 'normal',
             reportUrl: settings.reportUrl || '',
             templateDetailedMessage: settings.templateDetailedMessage || '',
+            errorFilter: settings.errorFilter || function () { return true; },
         };
     };
     ShowJSError.prototype.pushError = function (error) {
+        if (!this.settings.errorFilter(error)) {
+            return;
+        }
         this.state.errorBuffer.push(error);
         this.state.errorIndex = this.state.errorBuffer.length - 1;
         this.updateUI();

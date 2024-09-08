@@ -3,6 +3,7 @@ export interface ShowJSErrorSettings {
     reportUrl?: string;
     templateDetailedMessage?: string;
     size?: 'big' | 'normal';
+    errorFilter?: (error: ExtendedError) => boolean;
 }
 export interface ShowJSErrorElems {
     actions: HTMLDivElement;
