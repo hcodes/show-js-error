@@ -6,7 +6,7 @@ function getScreenOrientation() {
     return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
 }
 function copyTextToClipboard(text) {
-    const textarea = document.createElement('textarea');
+    var textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
     try {
@@ -19,14 +19,14 @@ function copyTextToClipboard(text) {
     document.body.removeChild(textarea);
 }
 function injectStyle(style) {
-    const styleNode = document.createElement('style');
+    var styleNode = document.createElement('style');
     document.body.appendChild(styleNode);
     styleNode.textContent = style;
     return styleNode;
 }
 
 function createElem(data) {
-    const elem = document.createElement(data.tag || 'div');
+    var elem = document.createElement(data.tag || 'div');
     if (data.props) {
         addProps(elem, data.props);
     }
@@ -35,19 +35,19 @@ function createElem(data) {
     return elem;
 }
 function addProps(elem, props) {
-    Object.keys(props).forEach(key => {
+    Object.keys(props).forEach(function (key) {
         elem[key] = props[key];
     });
 }
 function buildElemClass(name, mod) {
-    let elemName = 'show-js-error';
+    var elemName = 'show-js-error';
     if (name) {
         elemName += '__' + name;
     }
-    let className = elemName;
+    var className = elemName;
     if (mod) {
-        Object.keys(mod).forEach((modName) => {
-            const modValue = mod[modName];
+        Object.keys(mod).forEach(function (modName) {
+            var modValue = mod[modName];
             if (modValue === false || modValue === null || modValue === undefined || modValue === '') {
                 return;
             }
@@ -75,7 +75,7 @@ function getFilenameWithPosition(error) {
     if (!error) {
         return '';
     }
-    let text = error.filename || '';
+    var text = error.filename || '';
     if (typeof error.lineno !== 'undefined') {
         text += ':' + getValue(error.lineno, '');
         if (typeof error.colno !== 'undefined') {
@@ -85,9 +85,10 @@ function getFilenameWithPosition(error) {
     return text;
 }
 
-const STYLE = '.show-js-error{background:#ffc1cc;bottom:15px;color:#000;font-family:Arial,sans-serif;font-size:13px;left:15px;max-width:90vw;min-width:15em;opacity:1;position:fixed;transition:opacity .2s ease-out;transition-delay:0s;visibility:visible;z-index:10000000}.show-js-error_size_big{transform:scale(2) translate(25%,-25%)}.show-js-error_hidden{opacity:0;transition:opacity .3s,visibility 0s linear .3s;visibility:hidden}.show-js-error__title{background:#f66;color:#fff;font-weight:700;padding:4px 30px 4px 7px}.show-js-error__title_no-errors{background:#6b6}.show-js-error__message{cursor:pointer;display:inline}.show-js-error__message:before{background-color:#eee;border-radius:10px;content:"+";display:inline-block;font-size:10px;height:10px;line-height:10px;margin-bottom:2px;margin-right:5px;text-align:center;vertical-align:middle;width:10px}.show-js-error__body_detailed .show-js-error__message:before{content:"-"}.show-js-error__body_no-stack .show-js-error__message:before{display:none}.show-js-error__body_detailed .show-js-error__filename{display:block}.show-js-error__body_no-stack .show-js-error__filename{display:none}.show-js-error__close{color:#fff;cursor:pointer;font-size:20px;line-height:20px;padding:3px;position:absolute;right:2px;top:0}.show-js-error__body{line-height:19px;padding:5px 8px}.show-js-error__body_hidden{display:none}.show-js-error__filename{background:#ffe1ec;border:1px solid #faa;display:none;margin:3px 0 3px -2px;max-height:15em;overflow-y:auto;padding:5px;white-space:pre-wrap}.show-js-error__actions{border-top:1px solid #faa;margin-top:5px;padding:5px 0 3px}.show-js-error__actions_hidden{display:none}.show-js-error__arrows{margin-left:8px;white-space:nowrap}.show-js-error__arrows_hidden{display:none}.show-js-error__copy,.show-js-error__next,.show-js-error__num,.show-js-error__prev,.show-js-error__report{font-size:12px}.show-js-error__report_hidden{display:none}.show-js-error__next{margin-left:1px}.show-js-error__num{margin-left:5px;margin-right:5px}.show-js-error__copy,.show-js-error__report{margin-right:3px}.show-js-error input{padding:1px 2px}.show-js-error a,.show-js-error a:visited{color:#000;text-decoration:underline}.show-js-error a:hover{text-decoration:underline}';
-class ShowJSError {
-    constructor() {
+var STYLE = '.show-js-error{background:#ffc1cc;bottom:15px;color:#000;font-family:Arial,sans-serif;font-size:13px;left:15px;max-width:90vw;min-width:15em;opacity:1;position:fixed;transition:opacity .2s ease-out;transition-delay:0s;visibility:visible;z-index:10000000}.show-js-error_size_big{transform:scale(2) translate(25%,-25%)}.show-js-error_hidden{opacity:0;transition:opacity .3s,visibility 0s linear .3s;visibility:hidden}.show-js-error__title{background:#f66;color:#fff;font-weight:700;padding:4px 30px 4px 7px}.show-js-error__title_no-errors{background:#6b6}.show-js-error__message{cursor:pointer;display:inline}.show-js-error__message:before{background-color:#eee;border-radius:10px;content:"+";display:inline-block;font-size:10px;height:10px;line-height:10px;margin-bottom:2px;margin-right:5px;text-align:center;vertical-align:middle;width:10px}.show-js-error__body_detailed .show-js-error__message:before{content:"-"}.show-js-error__body_no-stack .show-js-error__message:before{display:none}.show-js-error__body_detailed .show-js-error__filename{display:block}.show-js-error__body_no-stack .show-js-error__filename{display:none}.show-js-error__close{color:#fff;cursor:pointer;font-size:20px;line-height:20px;padding:3px;position:absolute;right:2px;top:0}.show-js-error__body{line-height:19px;padding:5px 8px}.show-js-error__body_hidden{display:none}.show-js-error__filename{background:#ffe1ec;border:1px solid #faa;display:none;margin:3px 0 3px -2px;max-height:15em;overflow-y:auto;padding:5px;white-space:pre-wrap}.show-js-error__actions{border-top:1px solid #faa;margin-top:5px;padding:5px 0 3px}.show-js-error__actions_hidden{display:none}.show-js-error__arrows{margin-left:8px;white-space:nowrap}.show-js-error__arrows_hidden{display:none}.show-js-error__copy,.show-js-error__next,.show-js-error__num,.show-js-error__prev,.show-js-error__report{font-size:12px}.show-js-error__report_hidden{display:none}.show-js-error__next{margin-left:1px}.show-js-error__num{margin-left:5px;margin-right:5px}.show-js-error__copy,.show-js-error__report{margin-right:3px}.show-js-error input{padding:1px 2px}.show-js-error a,.show-js-error a:visited{color:#000;text-decoration:underline}.show-js-error a:hover{text-decoration:underline}';
+var ShowJSError = /** @class */ (function () {
+    function ShowJSError() {
+        var _this = this;
         this.elems = {};
         this.state = {
             appended: false,
@@ -95,9 +96,9 @@ class ShowJSError {
             errorIndex: 0,
             errorBuffer: [],
         };
-        this.onerror = (event) => {
-            const error = event.error ? event.error : event;
-            this.pushError({
+        this.onerror = function (event) {
+            var error = event.error ? event.error : event;
+            _this.pushError({
                 title: 'JavaScript Error',
                 message: error.message,
                 filename: error.filename,
@@ -106,17 +107,17 @@ class ShowJSError {
                 stack: error.stack,
             });
         };
-        this.onsecuritypolicyviolation = (error) => {
-            this.pushError({
+        this.onsecuritypolicyviolation = function (error) {
+            _this.pushError({
                 title: 'CSP Error',
-                message: `blockedURI: ${error.blockedURI || ''}\n violatedDirective: ${error.violatedDirective} || ''\n originalPolicy: ${error.originalPolicy || ''}`,
+                message: "blockedURI: ".concat(error.blockedURI || '', "\n violatedDirective: ").concat(error.violatedDirective, " || ''\n originalPolicy: ").concat(error.originalPolicy || ''),
                 colno: error.columnNumber,
                 filename: error.sourceFile,
                 lineno: error.lineNumber,
             });
         };
-        this.onunhandledrejection = (error) => {
-            this.pushError({
+        this.onunhandledrejection = function (error) {
+            _this.pushError({
                 title: 'Unhandled promise rejection',
                 message: error.reason.message,
                 colno: error.reason.colno,
@@ -125,11 +126,11 @@ class ShowJSError {
                 stack: error.reason.stack,
             });
         };
-        this.appendToBody = () => {
-            document.removeEventListener('DOMContentLoaded', this.appendToBody, false);
-            if (this.elems.container) {
-                this.styleNode = injectStyle(STYLE);
-                document.body.appendChild(this.elems.container);
+        this.appendToBody = function () {
+            document.removeEventListener('DOMContentLoaded', _this.appendToBody, false);
+            if (_this.elems.container) {
+                _this.styleNode = injectStyle(STYLE);
+                document.body.appendChild(_this.elems.container);
             }
         };
         this.settings = this.prepareSettings();
@@ -140,7 +141,7 @@ class ShowJSError {
         window.addEventListener('unhandledrejection', this.onunhandledrejection, false);
         document.addEventListener('securitypolicyviolation', this.onsecuritypolicyviolation, false);
     }
-    destruct() {
+    ShowJSError.prototype.destruct = function () {
         var _a;
         window.removeEventListener('error', this.onerror, false);
         window.removeEventListener('unhandledrejection', this.onunhandledrejection, false);
@@ -155,17 +156,17 @@ class ShowJSError {
             (_a = this.styleNode.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this.styleNode);
             this.styleNode = undefined;
         }
-    }
-    setSettings(settings) {
+    };
+    ShowJSError.prototype.setSettings = function (settings) {
         this.settings = this.prepareSettings(settings);
         if (this.state.appended) {
             this.updateUI();
         }
-    }
+    };
     /**
      * Show error panel with transmitted error.
      */
-    show(error) {
+    ShowJSError.prototype.show = function (error) {
         if (!error) {
             this.showUI();
             return;
@@ -178,48 +179,49 @@ class ShowJSError {
                 error :
                 new Error(error));
         }
-    }
+    };
     /**
      * Hide error panel.
      */
-    hide() {
+    ShowJSError.prototype.hide = function () {
         if (this.elems.container) {
             this.elems.container.className = buildElemClass('', {
                 size: this.settings.size,
                 hidden: true
             });
         }
-    }
+    };
     /**
      * Clear error panel.
      */
-    clear() {
+    ShowJSError.prototype.clear = function () {
         this.state.errorBuffer = [];
         this.state.detailed = false;
         this.setCurrentError(0);
-    }
+    };
     /**
      * Toggle view (shortly/detail).
      */
-    toggleView() {
+    ShowJSError.prototype.toggleView = function () {
         this.state.detailed = !this.state.detailed;
         this.updateUI();
-    }
-    prepareSettings(rawSettings) {
-        const settings = rawSettings || {};
+    };
+    ShowJSError.prototype.prepareSettings = function (rawSettings) {
+        var settings = rawSettings || {};
         return {
             size: settings.size || 'normal',
             reportUrl: settings.reportUrl || '',
             templateDetailedMessage: settings.templateDetailedMessage || '',
         };
-    }
-    pushError(error) {
+    };
+    ShowJSError.prototype.pushError = function (error) {
         this.state.errorBuffer.push(error);
         this.state.errorIndex = this.state.errorBuffer.length - 1;
         this.updateUI();
-    }
-    appendUI() {
-        const container = document.createElement('div');
+    };
+    ShowJSError.prototype.appendUI = function () {
+        var _this = this;
+        var container = document.createElement('div');
         container.className = buildElemClass('', {
             size: this.settings.size,
         });
@@ -228,29 +230,29 @@ class ShowJSError {
             name: 'close',
             props: {
                 innerText: '×',
-                onclick: () => {
-                    this.hide();
+                onclick: function () {
+                    _this.hide();
                 }
             },
-            container
+            container: container
         });
         this.elems.title = createElem({
             name: 'title',
             props: {
                 innerText: this.getTitle()
             },
-            container
+            container: container
         });
-        const body = createElem({
+        var body = createElem({
             name: 'body',
-            container
+            container: container
         });
         this.elems.body = body;
         this.elems.message = createElem({
             name: 'message',
             props: {
-                onclick: () => {
-                    this.toggleView();
+                onclick: function () {
+                    _this.toggleView();
                 }
             },
             container: body
@@ -267,11 +269,12 @@ class ShowJSError {
         else {
             document.addEventListener('DOMContentLoaded', this.appendToBody, false);
         }
-    }
-    createActions(container) {
-        const actions = createElem({
+    };
+    ShowJSError.prototype.createActions = function (container) {
+        var _this = this;
+        var actions = createElem({
             name: 'actions',
-            container
+            container: container
         });
         this.elems.actions = actions;
         createElem({
@@ -280,14 +283,14 @@ class ShowJSError {
             props: {
                 type: 'button',
                 value: 'Copy',
-                onclick: () => {
-                    const error = this.getCurrentError();
-                    copyTextToClipboard(this.getDetailedMessage(error));
+                onclick: function () {
+                    var error = _this.getCurrentError();
+                    copyTextToClipboard(_this.getDetailedMessage(error));
                 }
             },
             container: actions
         });
-        const reportLink = createElem({
+        var reportLink = createElem({
             tag: 'a',
             name: 'report-link',
             props: {
@@ -307,12 +310,13 @@ class ShowJSError {
             container: reportLink
         });
         this.createArrows(actions);
-    }
-    createArrows(container) {
-        const arrows = createElem({
+    };
+    ShowJSError.prototype.createArrows = function (container) {
+        var _this = this;
+        var arrows = createElem({
             tag: 'span',
             name: 'arrows',
-            container
+            container: container
         });
         this.elems.arrows = arrows;
         this.elems.prev = createElem({
@@ -321,8 +325,8 @@ class ShowJSError {
             props: {
                 type: 'button',
                 value: '←',
-                onclick: () => {
-                    this.setCurrentError(this.state.errorIndex - 1);
+                onclick: function () {
+                    _this.setCurrentError(_this.state.errorIndex - 1);
                 }
             },
             container: arrows
@@ -341,15 +345,15 @@ class ShowJSError {
             props: {
                 type: 'button',
                 value: '→',
-                onclick: () => {
-                    this.setCurrentError(this.state.errorIndex + 1);
+                onclick: function () {
+                    _this.setCurrentError(_this.state.errorIndex + 1);
                 }
             },
             container: arrows
         });
-    }
-    getDetailedMessage(error) {
-        let text = [
+    };
+    ShowJSError.prototype.getDetailedMessage = function (error) {
+        var text = [
             ['Title', this.getTitle(error)],
             ['Message', getMessage(error)],
             ['Filename', getFilenameWithPosition(error)],
@@ -360,32 +364,32 @@ class ShowJSError {
             ['Screen size', getScreenSize()],
             ['Screen orientation', getScreenOrientation()],
             ['Cookie enabled', navigator.cookieEnabled]
-        ].map(item => (item[0] + ': ' + item[1] + '\n')).join('');
+        ].map(function (item) { return (item[0] + ': ' + item[1] + '\n'); }).join('');
         if (this.settings.templateDetailedMessage) {
             text = this.settings.templateDetailedMessage.replace(/\{message\}/, text);
         }
         return text;
-    }
-    getTitle(error) {
+    };
+    ShowJSError.prototype.getTitle = function (error) {
         return error ? (error.title || 'Error') : 'No errors';
-    }
-    showUI() {
+    };
+    ShowJSError.prototype.showUI = function () {
         if (this.elems.container) {
             this.elems.container.className = buildElemClass('', {
                 size: this.settings.size,
             });
         }
-    }
-    hasStack() {
-        const error = this.getCurrentError();
+    };
+    ShowJSError.prototype.hasStack = function () {
+        var error = this.getCurrentError();
         return error && (error.stack || error.filename);
-    }
-    getCurrentError() {
+    };
+    ShowJSError.prototype.getCurrentError = function () {
         return this.state.errorBuffer[this.state.errorIndex];
-    }
-    setCurrentError(index) {
-        const length = this.state.errorBuffer.length;
-        let newIndex = index;
+    };
+    ShowJSError.prototype.setCurrentError = function (index) {
+        var length = this.state.errorBuffer.length;
+        var newIndex = index;
         if (newIndex > length - 1) {
             newIndex = length - 1;
         }
@@ -394,9 +398,9 @@ class ShowJSError {
         }
         this.state.errorIndex = newIndex;
         this.updateUI();
-    }
-    updateUI() {
-        const error = this.getCurrentError();
+    };
+    ShowJSError.prototype.updateUI = function () {
+        var error = this.getCurrentError();
         if (!this.state.appended) {
             this.state.appended = true;
             this.appendUI();
@@ -436,10 +440,10 @@ class ShowJSError {
         }
         this.updateArrows(error);
         this.showUI();
-    }
-    updateArrows(error) {
-        const length = this.state.errorBuffer.length;
-        const errorIndex = this.state.errorIndex;
+    };
+    ShowJSError.prototype.updateArrows = function (error) {
+        var length = this.state.errorBuffer.length;
+        var errorIndex = this.state.errorIndex;
         if (this.elems.arrows) {
             this.elems.arrows.className = buildElemClass('arrows', { hidden: !error });
         }
@@ -452,10 +456,11 @@ class ShowJSError {
         if (this.elems.next) {
             this.elems.next.disabled = errorIndex === length - 1;
         }
-    }
-}
+    };
+    return ShowJSError;
+}());
 
-const showJSError = new ShowJSError();
+var showJSError = new ShowJSError();
 if (typeof window !== 'undefined') {
     window.showJSError = showJSError;
 }
