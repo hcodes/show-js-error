@@ -7,7 +7,7 @@ export default [
       format: 'iife',
       file: './dist/show-js-error.js',
     },
-    plugins: [typescript({ tsconfig: './tsconfig.json' })]
+    plugins: [typescript()]
   },
   {
     input: 'src/index.ts',
@@ -15,6 +15,6 @@ export default [
       format: 'es',
       file: './dist/show-js-error.esm.js'
     },
-    plugins: [typescript({ tsconfig: './tsconfig.esm.json' })]
+    plugins: [typescript()]
   }
 ];
