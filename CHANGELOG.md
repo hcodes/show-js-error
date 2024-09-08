@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.1.0
+Added error filter.
+
 ## v4.0.4
 Added ES5 mode for ESM, no need to babelify the package code.
 
