@@ -6,6 +6,7 @@ export interface ShowJSErrorSettings {
     reportUrl?: string;
     templateDetailedMessage?: string;
     size?: 'big' | 'normal';
+    errorFilter?: (error: ExtendedError) => boolean;
 }
 
 export interface ShowJSErrorElems {
@@ -148,6 +149,7 @@ export class ShowJSError {
             size: settings.size || 'normal',
             reportUrl: settings.reportUrl || '',
             templateDetailedMessage: settings.templateDetailedMessage || '',
+            errorFilter: settings.errorFilter || function() { return true; },
         };
     }
 
@@ -186,6 +188,10 @@ export class ShowJSError {
     }
 
     private pushError(error: ExtendedError) {
+        if (!this.settings.errorFilter(error)) {
+            return;
+        }
+
         this.state.errorBuffer.push(error);
         this.state.errorIndex = this.state.errorBuffer.length - 1;
 
