@@ -16,7 +16,7 @@
             textarea.select();
             document.execCommand('copy');
         }
-        catch (e) {
+        catch (_a) {
             alert('Copying text is not supported in this browser.');
         }
         document.body.removeChild(textarea);
