@@ -14,7 +14,7 @@ export function copyTextToClipboard(text: string) {
     try {
         textarea.select();
         document.execCommand('copy');
-    } catch (e) {
+    } catch {
         alert('Copying text is not supported in this browser.');
     }
 
