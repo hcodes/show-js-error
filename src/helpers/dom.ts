@@ -3,7 +3,7 @@ export function getScreenSize(): string {
 }
 
 export function getScreenOrientation(): string {
-    return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
+    return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation?.type;
 }
 
 export function copyTextToClipboard(text: string) {
