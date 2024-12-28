@@ -3,7 +3,8 @@ function getScreenSize() {
     return [screen.width, screen.height, screen.colorDepth].join('×');
 }
 function getScreenOrientation() {
-    return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation.type;
+    var _a;
+    return typeof screen.orientation === 'string' ? screen.orientation : (_a = screen.orientation) === null || _a === void 0 ? void 0 : _a.type;
 }
 function copyTextToClipboard(text) {
     var textarea = document.createElement('textarea');
