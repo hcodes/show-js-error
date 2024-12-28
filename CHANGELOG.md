@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.1.1
+Fixed `screen.orientation.type` for old devices.
+
 ## v4.1.0
 Added error filter.
 
