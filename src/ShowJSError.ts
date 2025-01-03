@@ -481,7 +481,7 @@ export class ShowJSError {
         }
 
         if (this.elems.num) {
-            this.elems.num.innerText = (errorIndex + 1) + '\u2009/\u2009' + length;
+            this.elems.num.innerText = (errorIndex + 1) + '/' + length;
         }
 
         if (this.elems.next) {
