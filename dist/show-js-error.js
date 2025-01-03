@@ -1,4 +1,4 @@
-/*! show-js-error | © 2024 Denis Seleznev | MIT License | https://github.com/hcodes/show-js-error/ */
+/*! show-js-error | © 2025 Denis Seleznev | MIT License | https://github.com/hcodes/show-js-error/ */
 (function (exports) {
     'use strict';
 
@@ -459,7 +459,7 @@
                 this.elems.prev.disabled = !errorIndex;
             }
             if (this.elems.num) {
-                this.elems.num.innerText = (errorIndex + 1) + '\u2009/\u2009' + length;
+                this.elems.num.innerText = (errorIndex + 1) + '/' + length;
             }
             if (this.elems.next) {
                 this.elems.next.disabled = errorIndex === length - 1;
