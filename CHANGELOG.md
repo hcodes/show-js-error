@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.1.3
+Updated dev deps in package.json.
+
 ## v4.1.2
 Small fix.
 
