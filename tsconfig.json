@@ -1,9 +1,11 @@
 {
   "exclude": ["dist", "tools", "tests"],
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist/",
     "declaration": true,
     "declarationDir": "./dist",
+    "ignoreDeprecations": "6.0",
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Projects */
