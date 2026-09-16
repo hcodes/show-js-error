@@ -5,7 +5,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/show-js-error.svg?style=flat)](https://www.npmjs.org/package/show-js-error)
 [![install size](https://packagephobia.com/badge?p=show-js-error)](https://packagephobia.com/result?p=show-js-error)
 
-Shows a message when an js error occurs in a browser.<br>
+Shows a message when a js error occurs in a browser.<br>
 Useful for developing and testing your site on mobile phones, smart TV, tablets and desktop.
 
 ## [Demo](http://hcodes.github.io/show-js-error/tests/index.html)
@@ -21,7 +21,7 @@ Detail:<br>![Detail](https://raw.githubusercontent.com/hcodes/show-js-error/mast
 - No dependencies
 - Short and detailed mode
 - UI
-- Integration with Github
+- Integration with GitHub
 
 ## Browsers
 - Chrome
@@ -76,7 +76,8 @@ Set settings for error panel.
 showJSError.setSettings({
     reportUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}', // Default: ""
     templateDetailedMessage: 'My title\n{message}',
-    size: 'big' // for smart TV
+    size: 'big', // for smart TV
+    errorFilter: (error) => !/Script error/.test(error.message) // Default: () => true
 })
 ```
 
