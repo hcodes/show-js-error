@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.1.4
+- Fixed handling of non-object promise rejection reasons in `onunhandledrejection`.
+- Fixed `violatedDirective` fallback in CSP violation messages.
+- Fixed `screen.orientation` fallback for browsers without an orientation object.
+- Added `navigator.clipboard.writeText` support with a legacy textarea fallback for copying text.
+
 ## v4.1.3
 Updated dev deps in package.json.
 
