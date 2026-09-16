@@ -169,7 +169,7 @@ export class ShowJSError {
     private onsecuritypolicyviolation = (error: SecurityPolicyViolationEvent) => {
         this.pushError({
             title: 'CSP Error',
-            message: `blockedURI: ${error.blockedURI || ''}\n violatedDirective: ${error.violatedDirective} || ''\n originalPolicy: ${error.originalPolicy || ''}`,
+            message: `blockedURI: ${error.blockedURI || ''}\n violatedDirective: ${error.violatedDirective || ''}\n originalPolicy: ${error.originalPolicy || ''}`,
             colno: error.columnNumber,
             filename: error.sourceFile,
             lineno: error.lineNumber,
@@ -177,13 +177,16 @@ export class ShowJSError {
     }
 
     private onunhandledrejection = (error: PromiseRejectionEvent) => {
+        const reason = error.reason;
+        const isErrorLike = reason !== null && typeof reason === 'object';
+
         this.pushError({
             title: 'Unhandled promise rejection',
-            message: error.reason.message,
-            colno: error.reason.colno,
-            filename: error.reason.filename,
-            lineno: error.reason.lineno,
-            stack: error.reason.stack,
+            message: isErrorLike ? reason.message : (reason !== undefined ? String(reason) : ''),
+            colno: isErrorLike ? reason.colno : undefined,
+            filename: isErrorLike ? reason.filename : undefined,
+            lineno: isErrorLike ? reason.lineno : undefined,
+            stack: isErrorLike ? reason.stack : undefined,
         });
     }
 

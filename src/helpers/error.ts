@@ -15,10 +15,6 @@ export function getMessage(error?: ExtendedError): string {
     return error && error.message || '';
 }
 
-function getValue(value: number, defaultValue: string) {
-    return typeof value === 'undefined' ? defaultValue : value;
-}
-
 export function getFilenameWithPosition(error?: ExtendedError): string {
     if (!error) {
         return '';
@@ -26,9 +22,9 @@ export function getFilenameWithPosition(error?: ExtendedError): string {
 
     let text = error.filename || '';
     if (typeof error.lineno !== 'undefined') {
-        text += ':' + getValue(error.lineno, '');
+        text += ':' + error.lineno;
         if (typeof error.colno !== 'undefined') {
-            text += ':' + getValue(error.colno, '');
+            text += ':' + error.colno;
         }
     }
 

@@ -3,10 +3,26 @@ export function getScreenSize(): string {
 }
 
 export function getScreenOrientation(): string {
-    return typeof screen.orientation === 'string' ? screen.orientation : screen.orientation?.type;
+    if (typeof screen.orientation === 'string') {
+        return screen.orientation;
+    }
+
+    return screen.orientation?.type || '';
 }
 
 export function copyTextToClipboard(text: string) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {
+            copyTextToClipboardFallback(text);
+        });
+
+        return;
+    }
+
+    copyTextToClipboardFallback(text);
+}
+
+function copyTextToClipboardFallback(text: string) {
     const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
